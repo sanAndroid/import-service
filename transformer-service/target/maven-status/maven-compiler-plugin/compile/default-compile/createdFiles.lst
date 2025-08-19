@@ -1,0 +1,8 @@
+com/example/transformerservice/TransformationService.class
+com/example/transformerservice/RabbitTemplateConfig.class
+com/example/transformerservice/TransformerServiceApplication.class
+com/example/transformerservice/Winery.class
+com/example/transformerservice/VdpWinery.class
+com/example/transformerservice/RabbitMqConsumer.class
+com/example/transformerservice/RabbitMqConfig.class
+com/example/transformerservice/RabbitMqProducer.class

@@ -1,0 +1,8 @@
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/src/main/java/com/example/transformerservice/RabbitMqConfig.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/src/main/java/com/example/transformerservice/RabbitMqConsumer.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/src/main/java/com/example/transformerservice/RabbitMqProducer.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/src/main/java/com/example/transformerservice/RabbitTemplateConfig.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/src/main/java/com/example/transformerservice/TransformationService.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/src/main/java/com/example/transformerservice/TransformerServiceApplication.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/src/main/java/com/example/transformerservice/VdpWinery.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/src/main/java/com/example/transformerservice/Winery.java
