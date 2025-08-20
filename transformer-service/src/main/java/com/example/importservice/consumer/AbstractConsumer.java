@@ -22,13 +22,12 @@ public abstract class AbstractConsumer<I,O> {
     abstract public void receiveMessage(Message message);
 
     protected void processMessage(String message) {
-        I deserializedMessage = null;
         try {
-            deserializedMessage = objectMapper.readValue(message, type);
-        } catch (JsonProcessingException e) {
-            // log.error("...")
-        } finally {
+            I deserializedMessage = objectMapper.readValue(message, type);
             abstractTransformationService.transformAndSend(deserializedMessage);
+        } catch (JsonProcessingException e) {
+            System.err.println("Failed to deserialize message: " + message);
+            e.printStackTrace();
         }
     }
 }
