@@ -4,16 +4,14 @@ import com.example.transformerservice.model.ImportedWinery;
 import com.example.transformerservice.model.Winery;
 import com.example.transformerservice.producer.WineryProducer;
 import com.example.transformerservice.transformer.AbstractWineryTransformer;
-import org.springframework.stereotype.Service;
 
-@Service
-public abstract class AbstractWineryTransformationService extends AbstractTransformationService<ImportedWinery, Winery> {
+public abstract class AbstractWineryTransformationService<I extends ImportedWinery>  extends AbstractTransformationService<I , Winery> {
 
     protected AbstractWineryTransformationService(
             WineryProducer producer,
-            AbstractWineryTransformer transformer
+            AbstractWineryTransformer<I> transformer
     ) {
-        super(producer,transformer);
+        super(producer, transformer);
     }
 
 }

@@ -1,28 +1,34 @@
 package com.example.transformerservice.consumer;
 
-import com.example.transformerservice.producer.AbstractRabbitMqProducer;
 import com.example.transformerservice.service.AbstractTransformationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractConsumer<I,O> {
 
+    protected final Class<I> type;
     protected final AbstractTransformationService<I,O> abstractTransformationService;
-    protected final AbstractRabbitMqProducer<O> rabbitMqProducer;
     protected final ObjectMapper objectMapper;
 
     @Autowired
-    public AbstractConsumer(AbstractTransformationService abstractTransformationService, AbstractRabbitMqProducer rabbitMqProducer, ObjectMapper objectMapper) {
+    public AbstractConsumer(Class<I> type, AbstractTransformationService<I,O> abstractTransformationService, ObjectMapper objectMapper) {
+        this.type = type;
         this.abstractTransformationService = abstractTransformationService;
-        this.rabbitMqProducer = rabbitMqProducer;
         this.objectMapper = objectMapper;
     }
 
-    @RabbitListener(queues = "${app.rabbitmq.vdp-wineries-queue}")
-    public void receiveMessage(String message) {
-        processMessage(message);
-    }
+    abstract public void receiveMessage(Message message);
 
-    protected abstract void processMessage(String message);
+    protected void processMessage(String message) {
+        I deserializedMessage = null;
+        try {
+            deserializedMessage = objectMapper.readValue(message, type);
+        } catch (JsonProcessingException e) {
+            // log.error("...")
+        } finally {
+            abstractTransformationService.transformAndSend(deserializedMessage);
+        }
+    }
 }
