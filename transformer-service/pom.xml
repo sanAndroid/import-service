@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>transformer-service</artifactId>
+    <artifactId>import-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>transformer-service</name>
     <description>Spring Boot service to transform winery data</description>
@@ -43,6 +43,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-Dnet.bytebuddy.experimental=true</argLine>
+                </configuration>
             </plugin>
         </plugins>
     </build>
