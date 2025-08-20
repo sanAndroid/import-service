@@ -2,6 +2,7 @@ package com.example.importservice.transformer;
 
 import com.example.importservice.model.VdpWinery;
 import com.example.importservice.model.Winery;
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,53 +10,54 @@ import static org.assertj.core.api.Assertions.assertThat;
 class VdpWineryTransformerTest {
 
     private final VdpWineryTransformer transformer = new VdpWineryTransformer();
+    private final Faker faker = new Faker();
 
     @Test
     void transform_shouldReturnWinery() {
         VdpWinery vdpWinery = new VdpWinery(
-                "testName",
-                "testStreet",
-                "testPostalCity",
-                "testPhone",
-                "testEmail",
-                "testWebsite",
-                "testOpeningHours",
-                "testOwners",
-                "testCellarMaster",
-                "testHectares",
-                "testVarieties",
-                "testGeology",
-                "testRegion",
-                "testFeatures",
-                "testSparkling",
-                "testMemberships",
-                "testOrganicCert",
-                "testSustainabilityCert",
-                "testLagen",
-                "testSourceUrl"
+                faker.company().name(),
+                faker.address().streetAddress(),
+                faker.address().city(),
+                faker.phoneNumber().phoneNumber(),
+                faker.internet().emailAddress(),
+                faker.internet().url(),
+                faker.lorem().sentence(),
+                faker.name().fullName(),
+                faker.name().fullName(),
+                faker.number().digit(),
+                faker.lorem().word(),
+                faker.lorem().word(),
+                faker.address().state(),
+                faker.lorem().word(),
+                faker.lorem().word(),
+                faker.lorem().word(),
+                faker.lorem().word(),
+                faker.lorem().word(),
+                faker.lorem().word(),
+                faker.internet().url()
         );
 
         Winery result = transformer.transform(vdpWinery);
 
-        assertThat(result.name()).isEqualTo("testName");
-        assertThat(result.street()).isEqualTo("testStreet");
-        assertThat(result.postalCity()).isEqualTo("testPostalCity");
-        assertThat(result.phone()).isEqualTo("testPhone");
-        assertThat(result.email()).isEqualTo("testEmail");
-        assertThat(result.website()).isEqualTo("testWebsite");
-        assertThat(result.openingHours()).isEqualTo("testOpeningHours");
-        assertThat(result.owners()).isEqualTo("testOwners");
-        assertThat(result.cellarMaster()).isEqualTo("testCellarMaster");
-        assertThat(result.hectares()).isEqualTo("testHectares");
-        assertThat(result.varieties()).isEqualTo("testVarieties");
-        assertThat(result.geology()).isEqualTo("testGeology");
-        assertThat(result.region()).isEqualTo("testRegion");
-        assertThat(result.features()).isEqualTo("testFeatures");
-        assertThat(result.sparkling()).isEqualTo("testSparkling");
-        assertThat(result.memberships()).isEqualTo("testMemberships");
-        assertThat(result.organicCert()).isEqualTo("testOrganicCert");
-        assertThat(result.sustainabilityCert()).isEqualTo("testSustainabilityCert");
-        assertThat(result.lagen()).isEqualTo("testLagen");
-        assertThat(result.sourceUrl()).isEqualTo("testSourceUrl");
+        assertThat(result.name()).isEqualTo(vdpWinery.name());
+        assertThat(result.street()).isEqualTo(vdpWinery.street());
+        assertThat(result.postalCity()).isEqualTo(vdpWinery.postalCity());
+        assertThat(result.phone()).isEqualTo(vdpWinery.phone());
+        assertThat(result.email()).isEqualTo(vdpWinery.email());
+        assertThat(result.website()).isEqualTo(vdpWinery.website());
+        assertThat(result.openingHours()).isEqualTo(vdpWinery.openingHours());
+        assertThat(result.owners()).isEqualTo(vdpWinery.owners());
+        assertThat(result.cellarMaster()).isEqualTo(vdpWinery.cellarMaster());
+        assertThat(result.hectares()).isEqualTo(vdpWinery.hectares());
+        assertThat(result.varieties()).isEqualTo(vdpWinery.varieties());
+        assertThat(result.geology()).isEqualTo(vdpWinery.geology());
+        assertThat(result.region()).isEqualTo(vdpWinery.region());
+        assertThat(result.features()).isEqualTo(vdpWinery.features());
+        assertThat(result.sparkling()).isEqualTo(vdpWinery.sparkling());
+        assertThat(result.memberships()).isEqualTo(vdpWinery.memberships());
+        assertThat(result.organicCert()).isEqualTo(vdpWinery.organicCert());
+        assertThat(result.sustainabilityCert()).isEqualTo(vdpWinery.sustainabilityCert());
+        assertThat(result.lagen()).isEqualTo(vdpWinery.lagen());
+        assertThat(result.sourceUrl()).isEqualTo(vdpWinery.sourceUrl());
     }
 }
