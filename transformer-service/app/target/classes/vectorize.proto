@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package importservice;
 option java_multiple_files = true;
-option java_package = "com.example.importservice.grpc.vectorize";
+option java_package = "com.github.sanandroid.importservice.grpc.vectorize";
 option java_outer_classname = "VectorizeProto";
 
 

@@ -1,4 +1,4 @@
-com/example/importservice/model/ImportedWinery.class
-com/example/importservice/model/VdpWinery.class
-com/example/importservice/model/WineryEntity.class
-com/example/importservice/model/Winery.class
+com/github/sanandroid/importservice/model/VdpWinery.class
+com/github/sanandroid/importservice/model/ImportedWinery.class
+com/github/sanandroid/importservice/model/WineryEntity.class
+com/github/sanandroid/importservice/model/Winery.class
