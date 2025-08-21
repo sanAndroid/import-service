@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package importservice;
+option java_multiple_files = true;
+option java_package = "com.example.importservice.grpc.vectorize";
+option java_outer_classname = "VectorizeProto";
+
+
+service VectorizeService {
+  rpc GetEmbeddingVector (VectorizeRequest) returns (VectorizeResponse) {}
+}
+
+message VectorizeRequest {
+  string name = 1;
+  string address = 2;
+  string region = 3;
+  string country = 4;
+}
+
+message VectorizeResponse {
+  // 384-dim embedding
+  repeated float embedding = 1; // packed by default in proto3
+  int32 dim = 2;                // optional: echo dimension (e.g., 384
+}

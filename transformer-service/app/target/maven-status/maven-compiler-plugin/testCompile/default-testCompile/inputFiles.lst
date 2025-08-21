@@ -1,4 +1,4 @@
-/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/test/java/com/example/importservice/config/TestRabbitTemplateConfig.java
-/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/test/java/com/example/importservice/consumer/VdpWineryConsumerIT.java
-/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/test/java/com/example/importservice/consumer/VdpWineryConsumerTest.java
-/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/test/java/com/example/importservice/transformer/VdpWineryTransformerTest.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/test/java/com/example/importservice/config/TestRabbitTemplateConfig.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/test/java/com/example/importservice/consumer/VdpWineryConsumerIT.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/test/java/com/example/importservice/consumer/VdpWineryConsumerTest.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/test/java/com/example/importservice/transformer/VdpWineryTransformerTest.java
