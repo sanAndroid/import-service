@@ -1,0 +1,14 @@
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/TransformerServiceApplication.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/config/RabbitMqVdpConfig.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/config/RabbitTemplateConfig.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/consumer/AbstractConsumer.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/consumer/AbstractWineryConsumer.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/consumer/VdpWineryConsumer.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/producer/AbstractRabbitMqProducer.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/producer/WineryProducer.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/service/AbstractTransformationService.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/service/AbstractWineryTransformationService.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/service/VdpWineryTransformationService.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/transformer/AbstractTransformer.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/transformer/AbstractWineryTransformer.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/app/src/main/java/com/example/importservice/transformer/VdpWineryTransformer.java

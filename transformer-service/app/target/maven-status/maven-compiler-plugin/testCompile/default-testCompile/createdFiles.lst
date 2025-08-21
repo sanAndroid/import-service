@@ -1,0 +1,4 @@
+com/example/importservice/config/TestRabbitTemplateConfig.class
+com/example/importservice/consumer/VdpWineryConsumerTest.class
+com/example/importservice/consumer/VdpWineryConsumerIT.class
+com/example/importservice/transformer/VdpWineryTransformerTest.class

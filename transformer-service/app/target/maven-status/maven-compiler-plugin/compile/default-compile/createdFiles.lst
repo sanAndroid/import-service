@@ -1,0 +1,14 @@
+com/example/importservice/service/AbstractWineryTransformationService.class
+com/example/importservice/transformer/AbstractWineryTransformer.class
+com/example/importservice/consumer/AbstractConsumer.class
+com/example/importservice/transformer/AbstractTransformer.class
+com/example/importservice/consumer/VdpWineryConsumer.class
+com/example/importservice/service/VdpWineryTransformationService.class
+com/example/importservice/producer/WineryProducer.class
+com/example/importservice/config/RabbitTemplateConfig.class
+com/example/importservice/config/RabbitMqVdpConfig.class
+com/example/importservice/producer/AbstractRabbitMqProducer.class
+com/example/importservice/transformer/VdpWineryTransformer.class
+com/example/importservice/service/AbstractTransformationService.class
+com/example/importservice/TransformerServiceApplication.class
+com/example/importservice/consumer/AbstractWineryConsumer.class
