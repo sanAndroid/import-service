@@ -2,6 +2,7 @@ package com.example.importservice.transformer;
 
 import com.example.importservice.model.VdpWinery;
 import com.example.importservice.model.Winery;
+import com.example.importservice.model.WineryEntity;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +38,7 @@ class VdpWineryTransformerTest {
                 faker.internet().url()
         );
 
-        Winery result = transformer.transform(vdpWinery);
+        WineryEntity result = transformer.transform(vdpWinery);
 
         assertThat(result.name()).isEqualTo(vdpWinery.name());
         assertThat(result.street()).isEqualTo(vdpWinery.street());

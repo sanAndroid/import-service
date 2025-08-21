@@ -1,5 +1,5 @@
 package com.example.importservice.transformer;
 
-public interface AbstractTransformer<T,O> {
-    O transform(T t);
+public interface AbstractTransformer<T, E> {
+    E transform(T t);
 }

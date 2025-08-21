@@ -1,23 +1,26 @@
 package com.example.importservice.service;
 
-import com.example.importservice.producer.AbstractRabbitMqProducer;
 import com.example.importservice.transformer.AbstractTransformer;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public abstract class AbstractTransformationService<I, O> {
+import java.util.UUID;
 
-    protected final AbstractRabbitMqProducer<O> producer;
-    protected final AbstractTransformer<I, O> transformer;
+public abstract class AbstractTransformationService<I, E> {
+
+    // TODO: Not sure about the UUID here
+    protected final JpaRepository<E, UUID> repository;
+    protected final AbstractTransformer<I, E> transformer;
 
     protected AbstractTransformationService(
-            AbstractRabbitMqProducer<O> producer,
-            AbstractTransformer<I, O> transformer
+            JpaRepository<E,UUID> repository,
+            AbstractTransformer<I, E> transformer
     ) {
-        this.producer = producer;
+        this.repository = repository;
         this.transformer = transformer;
     }
 
     public void transformAndSend(I input) {
-        O result = transformer.transform(input);
-        producer.sendMessage(result);
+        E result = transformer.transform(input);
+        repository.save(result);
     }
 }
