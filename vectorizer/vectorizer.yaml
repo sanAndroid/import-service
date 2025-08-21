@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vectorizer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vectorizer
+  template:
+    metadata:
+      labels:
+        app: vectorizer
+    spec:
+      containers:
+        - name: vectorizer
+          image: vectorizer:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vectorizer-service
+spec:
+  selector:
+    app: vectorizer
+  ports:
+    - port: 80
+      targetPort: 8000
