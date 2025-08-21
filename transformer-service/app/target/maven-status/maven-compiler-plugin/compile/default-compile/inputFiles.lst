@@ -2,11 +2,12 @@
 /Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/client/VectorizeClient.java
 /Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/config/RabbitMqVdpConfig.java
 /Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/config/RabbitTemplateConfig.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/config/VectorizerGrpcConfig.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/config/VectorizerGrpcProperties.java
 /Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/consumer/AbstractConsumer.java
 /Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/consumer/AbstractWineryConsumer.java
 /Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/consumer/VdpWineryConsumer.java
-/Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/producer/AbstractRabbitMqProducer.java
-/Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/producer/WineryProducer.java
+/Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/repository/WineryRepository.java
 /Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/service/AbstractTransformationService.java
 /Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/service/AbstractWineryTransformationService.java
 /Users/jonascampos/Development/MCP/wine/apps/transformer-service/transformer-service/app/src/main/java/com/example/importservice/service/VdpWineryTransformationService.java

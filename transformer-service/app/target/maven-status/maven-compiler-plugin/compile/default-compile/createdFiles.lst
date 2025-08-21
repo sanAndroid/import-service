@@ -9,6 +9,7 @@ com/example/importservice/client/VectorizeClient.class
 com/example/importservice/grpc/vectorize/VectorizeServiceGrpc$4.class
 com/example/importservice/grpc/vectorize/VectorizeServiceGrpc$VectorizeServiceImplBase.class
 com/example/importservice/grpc/vectorize/VectorizeRequest$Builder.class
+com/example/importservice/config/VectorizerGrpcConfig.class
 com/example/importservice/grpc/vectorize/VectorizeResponse.class
 com/example/importservice/TransformerServiceApplication.class
 com/example/importservice/grpc/vectorize/VectorizeServiceGrpc$VectorizeServiceBlockingV2Stub.class
@@ -19,15 +20,15 @@ com/example/importservice/grpc/vectorize/VectorizeResponse$Builder.class
 com/example/importservice/grpc/vectorize/VectorizeRequest.class
 com/example/importservice/grpc/vectorize/VectorizeServiceGrpc$VectorizeServiceFutureStub.class
 com/example/importservice/service/AbstractWineryTransformationService.class
+com/example/importservice/config/VectorizerGrpcProperties.class
 com/example/importservice/transformer/AbstractWineryTransformer.class
 com/example/importservice/grpc/vectorize/VectorizeRequestOrBuilder.class
 com/example/importservice/consumer/VdpWineryConsumer.class
 com/example/importservice/grpc/vectorize/VectorizeServiceGrpc$2.class
 com/example/importservice/grpc/vectorize/VectorizeServiceGrpc.class
-com/example/importservice/producer/WineryProducer.class
 com/example/importservice/grpc/vectorize/VectorizeRequest$1.class
 com/example/importservice/config/RabbitTemplateConfig.class
-com/example/importservice/producer/AbstractRabbitMqProducer.class
+com/example/importservice/repository/WineryRepository.class
 com/example/importservice/grpc/vectorize/VectorizeServiceGrpc$VectorizeServiceBaseDescriptorSupplier.class
 com/example/importservice/grpc/vectorize/VectorizeServiceGrpc$VectorizeServiceMethodDescriptorSupplier.class
 com/example/importservice/transformer/VdpWineryTransformer.class
