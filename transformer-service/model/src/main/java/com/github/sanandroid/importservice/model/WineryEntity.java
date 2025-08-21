@@ -1,6 +1,10 @@
 package com.github.sanandroid.importservice.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,78 +19,82 @@ import java.util.UUID;
                 @Index(name = "uk_winery_website", columnList = "website", unique = true)
         }
 )
-public record WineryEntity(
+@Getter
+@Setter
+@NoArgsConstructor // JPA requires a no-args constructor
+@AllArgsConstructor
+public class WineryEntity {
 
         @Id
         @GeneratedValue(strategy = GenerationType.UUID)
         @Column(name = "id", nullable = false, updatable = false, columnDefinition = "uuid")
-        UUID id,
+        private UUID id;
 
         @Column(name = "name", nullable = false)
-        String name,
+        private String name;
 
         @Column(name = "street")
-        String street,
+        private String street;
 
         @Column(name = "postal_city")
-        String postalCity,
+        private String postalCity;
 
         @Column(name = "phone")
-        String phone,
+        private String phone;
 
         @Column(name = "email")
-        String email,
+        private String email;
 
         @Column(name = "website", unique = true)
-        String website,
+        private String website;
 
         @Column(name = "opening_hours", columnDefinition = "text")
-        String openingHours,
+        private String openingHours;
 
         @Column(name = "owners")
-        String owners,
+        private String owners;
 
         @Column(name = "cellar_master")
-        String cellarMaster,
+        private String cellarMaster;
 
         @Column(name = "hectares")
-        String hectares,
+        private String hectares;
 
         @Column(name = "varieties", columnDefinition = "text")
-        String varieties,
+        private String varieties;
 
         @Column(name = "geology", columnDefinition = "text")
-        String geology,
+        private String geology;
 
         @Column(name = "region")
-        String region,
+        private String region;
 
         @Column(name = "features", columnDefinition = "text")
-        String features,
+        private String features;
 
         @Column(name = "sparkling")
-        String sparkling,
+        private String sparkling;
 
         @Column(name = "memberships", columnDefinition = "text")
-        String memberships,
+        private String memberships;
 
         @Column(name = "organic_cert")
-        String organicCert,
+        private String organicCert;
 
         @Column(name = "sustainability_cert")
-        String sustainabilityCert,
+        private String sustainabilityCert;
 
         @Column(name = "lagen", columnDefinition = "text")
-        String lagen,
+        private String lagen;
 
         @Column(name = "source_url")
-        String sourceUrl,
+        private String sourceUrl;
 
         @CreationTimestamp
         @Column(name = "created_at", nullable = false, updatable = false)
-        Instant createdAt,
+        private Instant createdAt;
 
         @UpdateTimestamp
         @Column(name = "updated_at", nullable = false)
-        Instant updatedAt
-){}
+        private Instant updatedAt;
+}
