@@ -1,7 +1,7 @@
 package com.github.sanandroid.importservice.consumer;
 
 import com.github.sanandroid.importservice.model.ImportedWinery;
-import com.github.sanandroid.importservice.model.WineryEntity;
+import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import com.github.sanandroid.importservice.service.AbstractWineryTransformationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

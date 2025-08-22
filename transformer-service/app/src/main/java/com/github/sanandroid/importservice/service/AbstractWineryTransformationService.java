@@ -1,7 +1,7 @@
 package com.github.sanandroid.importservice.service;
 
 import com.github.sanandroid.importservice.model.ImportedWinery;
-import com.github.sanandroid.importservice.model.WineryEntity;
+import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import com.github.sanandroid.importservice.repository.WineryRepository;
 import com.github.sanandroid.importservice.transformer.AbstractWineryTransformer;
 

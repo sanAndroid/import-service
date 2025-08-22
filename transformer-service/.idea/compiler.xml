@@ -12,6 +12,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="import-service" target="1.5" />
       <module name="proto" target="21" />
       <module name="proto (1)" target="1.5" />
     </bytecodeTargetLevel>

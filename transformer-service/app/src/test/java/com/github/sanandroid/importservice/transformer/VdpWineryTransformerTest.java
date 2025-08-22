@@ -1,7 +1,7 @@
 package com.github.sanandroid.importservice.transformer;
 
 import com.github.sanandroid.importservice.model.VdpWinery;
-import com.github.sanandroid.importservice.model.WineryEntity;
+import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 

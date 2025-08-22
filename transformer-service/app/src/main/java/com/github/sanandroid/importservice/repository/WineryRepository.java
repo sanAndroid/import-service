@@ -1,6 +1,6 @@
 package com.github.sanandroid.importservice.repository;
 
-import com.github.sanandroid.importservice.model.WineryEntity;
+import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

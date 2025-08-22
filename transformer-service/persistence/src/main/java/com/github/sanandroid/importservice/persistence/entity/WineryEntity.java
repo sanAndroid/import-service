@@ -1,4 +1,4 @@
-package com.github.sanandroid.importservice.model;
+package com.github.sanandroid.importservice.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
+import com.pgvector.PGvector;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -29,6 +29,10 @@ public class WineryEntity {
         @GeneratedValue(strategy = GenerationType.UUID)
         @Column(name = "id", nullable = false, updatable = false, columnDefinition = "uuid")
         private UUID id;
+
+        @Convert(converter = PgVectorFloatArrayConverter.class)
+        @Column(name = "embedding", columnDefinition = "vector(384)")
+        private float[] embedding;
 
         @Column(name = "name", nullable = false)
         private String name;
