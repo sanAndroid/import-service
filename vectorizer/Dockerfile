@@ -8,11 +8,19 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install protoc compiler if not already
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      protobuf-compiler \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy your app
 COPY vectorizer.py .
+COPY vectorize.proto .
 
-# Expose FastAPI port
-EXPOSE 8000
+# Expose GPRC port
+EXPOSE 50051
 
-# Start with Uvicorn
-CMD ["uvicorn", "vectorizer:app", "--host", "0.0.0.0", "--port", "8000"]
+# Auto Generate Code 
+RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. vectorize.proto
+# Run the vectorizer
+CMD ["python", "vectorizer.py"]

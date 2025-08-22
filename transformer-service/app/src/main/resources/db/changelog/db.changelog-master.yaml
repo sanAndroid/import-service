@@ -1,0 +1,103 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-wineries
+      author: you
+      changes:
+        - createTable:
+            tableName: wineries
+            ifNotExists: true
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: street
+                  type: varchar(255)
+              - column:
+                  name: postal_city
+                  type: varchar(255)
+              - column:
+                  name: phone
+                  type: varchar(255)
+              - column:
+                  name: email
+                  type: varchar(255)
+              - column:
+                  name: website
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: opening_hours
+                  type: text
+              - column:
+                  name: owners
+                  type: varchar(255)
+              - column:
+                  name: cellar_master
+                  type: varchar(255)
+              - column:
+                  name: hectares
+                  type: varchar(255)
+              - column:
+                  name: varieties
+                  type: text
+              - column:
+                  name: geology
+                  type: text
+              - column:
+                  name: region
+                  type: varchar(255)
+              - column:
+                  name: features
+                  type: text
+              - column:
+                  name: sparkling
+                  type: varchar(255)
+              - column:
+                  name: memberships
+                  type: text
+              - column:
+                  name: organic_cert
+                  type: varchar(255)
+              - column:
+                  name: sustainability_cert
+                  type: varchar(255)
+              - column:
+                  name: lagen
+                  type: text
+              - column:
+                  name: source_url
+                  type: varchar(255)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 002-add-embedding
+      author: you
+      changes:
+        - sql: CREATE EXTENSION IF NOT EXISTS vector
+        - addColumn:
+            tableName: wineries
+            columns:
+              - column:
+                  name: embedding
+                  type: vector(384)
+        - sql: CREATE INDEX IF NOT EXISTS idx_wineries_embedding_cos
+            ON wineries USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100)

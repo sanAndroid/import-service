@@ -1,3 +1,4 @@
-fastapi
-uvicorn
+grpcio
+grpcio-tools
+protobuf
 sentence-transformers
