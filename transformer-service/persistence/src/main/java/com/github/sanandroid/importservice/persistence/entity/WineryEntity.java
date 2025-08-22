@@ -6,8 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
-import com.pgvector.PGvector;
+import org.hibernate.type.SqlTypes;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -30,7 +32,7 @@ public class WineryEntity {
         @Column(name = "id", nullable = false, updatable = false, columnDefinition = "uuid")
         private UUID id;
 
-        @Convert(converter = PgVectorFloatArrayConverter.class)
+        @JdbcTypeCode(SqlTypes.VECTOR)
         @Column(name = "embedding", columnDefinition = "vector(384)")
         private float[] embedding;
 
@@ -101,4 +103,5 @@ public class WineryEntity {
         @UpdateTimestamp
         @Column(name = "updated_at", nullable = false)
         private Instant updatedAt;
+
 }

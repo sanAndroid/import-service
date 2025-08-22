@@ -11,6 +11,7 @@ public class VdpWineryTransformer implements AbstractWineryTransformer<VdpWinery
     public WineryEntity transform(VdpWinery importedWinery) {
         return new WineryEntity(
                 null,
+                null,
                 importedWinery.name(),
                 importedWinery.street(),
                 importedWinery.postalCity(),

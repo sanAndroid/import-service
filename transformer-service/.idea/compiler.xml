@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="app" />
+        <module name="persistence" />
         <module name="model" />
       </profile>
     </annotationProcessing>
@@ -22,6 +23,7 @@
       <module name="app" options="-parameters" />
       <module name="import-service" options="" />
       <module name="model" options="-parameters" />
+      <module name="persistence" options="-parameters" />
       <module name="proto" options="-parameters" />
     </option>
   </component>

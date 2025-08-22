@@ -24,6 +24,7 @@ public class VdpWineryTransformationService extends AbstractWineryTransformation
     public void transformAndSend(VdpWinery input) {
         float[] embedding = vectorizeClient.getEmbedding(input.name(),input.postalCity(),input.region(),"germany");
         WineryEntity result = transformer.transform(input);
+        result.setEmbedding(embedding);
         repository.save(result);
     }
 }
