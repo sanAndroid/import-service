@@ -7,6 +7,7 @@ import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import com.github.sanandroid.importservice.producer.WineryProducer;
 import com.github.sanandroid.importservice.repository.WineryRepository;
 import com.github.sanandroid.importservice.transformer.VdpWineryTransformer;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,11 +27,12 @@ public class VdpWineryTransformationService extends AbstractWineryTransformation
         this.wineryProducer = wineryProducer;
     }
 
+    @Transactional
     public void transformAndSend(VdpWinery input) {
         float[] embedding = vectorizeClient.getEmbedding(input.name(),input.postalCity(),input.region(),"germany");
         WineryEntity result = transformer.transform(input);
         result.setEmbedding(embedding);
-        repository.save(result);
+        repository.upsert(result);
         try {
             wineryProducer.sendMessage(result);
         } catch (JsonProcessingException e) {

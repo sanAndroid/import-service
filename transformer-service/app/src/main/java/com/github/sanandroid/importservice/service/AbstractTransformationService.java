@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 @AllArgsConstructor
-public abstract class AbstractTransformationService<I, E> {
+public abstract class AbstractTransformationService<I, E, Repo extends JpaRepository<E,UUID>> {
 
     // TODO: Not sure about the UUID here
-    protected final JpaRepository<E, UUID> repository;
+    protected final Repo repository;
     protected final AbstractTransformer<I, E> transformer;
 
     public void transformAndSend(I input) {

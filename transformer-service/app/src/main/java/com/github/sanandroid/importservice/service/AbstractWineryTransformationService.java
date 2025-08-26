@@ -5,7 +5,7 @@ import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import com.github.sanandroid.importservice.repository.WineryRepository;
 import com.github.sanandroid.importservice.transformer.AbstractWineryTransformer;
 
-public abstract class AbstractWineryTransformationService<I extends ImportedWinery>  extends AbstractTransformationService<I , WineryEntity> {
+public abstract class AbstractWineryTransformationService<I extends ImportedWinery>  extends AbstractTransformationService<I , WineryEntity, WineryRepository> {
 
     protected AbstractWineryTransformationService(
             WineryRepository repository,
