@@ -8,6 +8,8 @@ import com.github.sanandroid.importservice.producer.WineryProducer;
 import com.github.sanandroid.importservice.repository.WineryRepository;
 import com.github.sanandroid.importservice.transformer.VdpWineryTransformer;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +17,7 @@ public class VdpWineryTransformationService extends AbstractWineryTransformation
 
     final private VectorizeClient vectorizeClient;
     final private WineryProducer wineryProducer;
+    private static final Logger log = LoggerFactory.getLogger(VdpWineryTransformationService.class);
 
     protected VdpWineryTransformationService(
             WineryRepository repository,
@@ -34,6 +37,7 @@ public class VdpWineryTransformationService extends AbstractWineryTransformation
         result.setEmbedding(embedding);
         repository.upsert(result);
         try {
+            log.info("Sending Message to rabbit");
             wineryProducer.sendMessage(result);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

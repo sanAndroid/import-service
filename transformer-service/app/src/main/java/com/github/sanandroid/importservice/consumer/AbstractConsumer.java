@@ -5,15 +5,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public abstract class AbstractConsumer<I,O> {
+import java.util.UUID;
+
+public abstract class AbstractConsumer<I, E,REPO extends JpaRepository<E,UUID>> {
 
     protected final Class<I> type;
-    protected final AbstractTransformationService<I,O> abstractTransformationService;
+    protected final AbstractTransformationService<I, E,REPO> abstractTransformationService;
     protected final ObjectMapper objectMapper;
 
     @Autowired
-    public AbstractConsumer(Class<I> type, AbstractTransformationService<I,O> abstractTransformationService, ObjectMapper objectMapper) {
+    public AbstractConsumer(Class<I> type, AbstractTransformationService<I, E, REPO> abstractTransformationService, ObjectMapper objectMapper) {
         this.type = type;
         this.abstractTransformationService = abstractTransformationService;
         this.objectMapper = objectMapper;
