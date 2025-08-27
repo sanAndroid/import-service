@@ -22,6 +22,7 @@ public class WineTransformer implements AbstractTransformer<Wine, WineEntity> {
 
         return new WineEntity(
                 null,
+                null,
                 wineryEntity,
                 wine.name(),
                 wine.type(),

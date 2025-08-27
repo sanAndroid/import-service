@@ -8,14 +8,28 @@ import vectorize_pb2_grpc as pbg
 # Load once, reuse
 model = SentenceTransformer("all-MiniLM-L6-v2")  # 384-dim
 
-def join_fields(req: pb.VectorizeRequest) -> str:
+def join_winery_fields(req: pb.WineryVectorizeRequest) -> str:
     # Simple concatenation; tune as needed
     parts = [req.name, req.address, req.region, req.country]
     return " | ".join(p for p in parts if p)
 
+def join_wine_fields(req: pb.WineVectorizeRequest) -> str:
+    # Simple concatenation; tune as needed
+    parts = [req.name, req.type, req.winery]
+    if req.grapes:
+        parts.extend(req.grapes)
+    return " | ".join(p for p in parts if p)
+
 class VectorizeService(pbg.VectorizeServiceServicer):
-    def GetEmbeddingVector(self, request: pb.VectorizeRequest, context):
-        text = join_fields(request)
+    def GetWineryEmbeddingVector(self, request: pb.WineryVectorizeRequest, context):
+        text = join_winery_fields(request)
+        vec = model.encode(text)  # np.ndarray shape (384,)
+        # Ensure python floats (not numpy types)
+        embedding = [float(x) for x in vec.tolist()]
+        return pb.VectorizeResponse(embedding=embedding, dim=len(embedding))
+
+    def GetWineEmbeddingVector(self, request: pb.WineVectorizeRequest, context):
+        text = join_wine_fields(request)
         vec = model.encode(text)  # np.ndarray shape (384,)
         # Ensure python floats (not numpy types)
         embedding = [float(x) for x in vec.tolist()]
