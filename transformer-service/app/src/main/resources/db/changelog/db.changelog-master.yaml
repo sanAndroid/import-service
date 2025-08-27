@@ -97,3 +97,6 @@ databaseChangeLog:
            sql: ALTER TABLE wineries ADD COLUMN IF NOT EXISTS embedding VECTOR(384);
         - sql: CREATE INDEX IF NOT EXISTS idx_wineries_embedding_cos
             ON wineries USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100)
+
+  - include:
+      file: db/changelog/003-create-wines.yaml

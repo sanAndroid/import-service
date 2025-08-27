@@ -1,0 +1,150 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-wines
+      author: you
+      changes:
+        - createTable:
+            tableName: wines
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: winery_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_wines_winery_id
+                    references: wineries(id)
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(255)
+              - column:
+                  name: region
+                  type: varchar(255)
+              - column:
+                  name: country
+                  type: varchar(255)
+              - column:
+                  name: alcohol_content
+                  type: float4
+              - column:
+                  name: vintage
+                  type: int
+              - column:
+                  name: price
+                  type: float4
+              - column:
+                  name: price_range
+                  type: varchar(255)
+              - column:
+                  name: currency
+                  type: varchar(255)
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: quality_level
+                  type: varchar(255)
+              - column:
+                  name: shop_url
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: bottle_size
+                  type: varchar(255)
+              - column:
+                  name: average_rating
+                  type: float4
+              - column:
+                  name: number_of_ratings
+                  type: int
+              - column:
+                  name: serving_temperature
+                  type: varchar(255)
+              - column:
+                  name: availability_status
+                  type: varchar(255)
+              - column:
+                  name: sku
+                  type: varchar(255)
+              - column:
+                  name: image_url
+                  type: varchar(255)
+              - column:
+                  name: scraped_at
+                  type: varchar(255)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: wine_entity_grapes
+            columns:
+              - column:
+                  name: wine_entity_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_wine_grapes_wine_id
+                    references: wines(id)
+              - column:
+                  name: grapes
+                  type: varchar(255)
+        - createTable:
+            tableName: wine_entity_critic_scores
+            columns:
+              - column:
+                  name: wine_entity_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_wine_critic_scores_wine_id
+                    references: wines(id)
+              - column:
+                  name: critic_name
+                  type: varchar(255)
+              - column:
+                  name: score
+                  type: float4
+        - createTable:
+            tableName: wine_entity_food_pairings
+            columns:
+              - column:
+                  name: wine_entity_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_wine_food_pairings_wine_id
+                    references: wines(id)
+              - column:
+                  name: food_pairings
+                  type: varchar(255)
+        - createTable:
+            tableName: wine_entity_source_urls
+            columns:
+              - column:
+                  name: wine_entity_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_wine_source_urls_wine_id
+                    references: wines(id)
+              - column:
+                  name: source_urls
+                  type: varchar(255)

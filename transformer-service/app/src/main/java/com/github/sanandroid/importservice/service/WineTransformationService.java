@@ -8,14 +8,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WineTransformationService extends AbstractTransformationService<Wine> {
+public class WineTransformationService extends AbstractTransformationService<Wine, WineEntity, WineRepository, WineTransformer> {
 
-    private final WineRepository repository;
-    private final WineTransformer transformer;
 
     public WineTransformationService(WineRepository repository, WineTransformer transformer) {
-        this.repository = repository;
-        this.transformer = transformer;
+        super(repository,transformer);
     }
 
     @Transactional
