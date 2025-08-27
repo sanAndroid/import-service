@@ -1,6 +1,6 @@
 package com.github.sanandroid.importservice.transformer;
 
-import com.github.sanandroid.importservice.model.VdpWinery;
+import com.github.sanandroid.importservice.model.winery.VdpWinery;
 import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ class VdpWineryTransformerTest {
     private final Faker faker = new Faker();
 
     @Test
-    void transform_shouldReturnWinery() {
+    void transform_ToEntity_shouldReturnWinery() {
         VdpWinery vdpWinery = new VdpWinery(
                 faker.company().name(),
                 faker.address().streetAddress(),
@@ -37,7 +37,7 @@ class VdpWineryTransformerTest {
                 faker.internet().url()
         );
 
-        WineryEntity result = transformer.transform(vdpWinery);
+        WineryEntity result = transformer.transformToEntity(vdpWinery);
 
         assertThat(result.getName()).isEqualTo(vdpWinery.name());
         assertThat(result.getStreet()).isEqualTo(vdpWinery.street());

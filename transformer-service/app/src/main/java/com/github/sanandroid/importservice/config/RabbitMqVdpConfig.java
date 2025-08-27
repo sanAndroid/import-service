@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+// #TODO: Binding the exchange to the queue doesn't work yet
 @Configuration
 public class RabbitMqVdpConfig {
 

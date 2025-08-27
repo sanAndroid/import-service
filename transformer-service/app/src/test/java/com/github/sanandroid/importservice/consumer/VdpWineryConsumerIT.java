@@ -1,8 +1,8 @@
 package com.github.sanandroid.importservice.consumer;
 
 import com.github.sanandroid.importservice.client.VectorizeClient;
-import com.github.sanandroid.importservice.model.VdpWinery;
-import com.github.sanandroid.importservice.repository.WineryRepository;
+import com.github.sanandroid.importservice.model.winery.VdpWinery;
+import com.github.sanandroid.importservice.persistence.repository.WineryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ class VdpWineryConsumerIT {
     @Test
     void shouldConsumeMessageAndTransform() {
         float[] embedding = new float[384];
-        when(vectorizeClient.getEmbedding(any(String.class), any(String.class), any(String.class), any(String.class))).thenReturn(embedding);
+        when(vectorizeClient.getEmbeddingForWinery(any(String.class), any(String.class), any(String.class), any(String.class))).thenReturn(embedding);
         VdpWinery vdpWinery = new VdpWinery(
                 "test winery",
                 "test street",

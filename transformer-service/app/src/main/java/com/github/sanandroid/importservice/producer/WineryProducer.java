@@ -1,6 +1,6 @@
 package com.github.sanandroid.importservice.producer;
 
-import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
+import com.github.sanandroid.importservice.model.winery.WineryMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -24,7 +24,7 @@ public class WineryProducer {
         this.objectMapper = objectMapper;
     }
 
-    public void sendMessage(WineryEntity wineryEntity) throws JsonProcessingException {
+    public void sendMessage(WineryMessage wineryEntity) throws JsonProcessingException {
         String message = objectMapper.writeValueAsString(wineryEntity);
         rabbitTemplate.convertAndSend(exchange, routingKey, message);
     }

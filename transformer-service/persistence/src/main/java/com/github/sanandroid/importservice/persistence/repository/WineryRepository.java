@@ -1,4 +1,4 @@
-package com.github.sanandroid.importservice.repository;
+package com.github.sanandroid.importservice.persistence.repository;
 
 import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import jakarta.transaction.Transactional;
@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -54,4 +55,7 @@ public interface WineryRepository extends JpaRepository<WineryEntity, UUID> {
     """, nativeQuery = true)
     int upsert(@Param("w") WineryEntity w);
 
+    Optional<WineryEntity> findByName(String name);
+
+    Optional<WineryEntity> findByWebsite(String website);
 }

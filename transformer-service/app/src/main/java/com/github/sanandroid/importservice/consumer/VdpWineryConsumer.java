@@ -1,6 +1,6 @@
 package com.github.sanandroid.importservice.consumer;
 
-import com.github.sanandroid.importservice.model.VdpWinery;
+import com.github.sanandroid.importservice.model.winery.VdpWinery;
 import com.github.sanandroid.importservice.service.VdpWineryTransformationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;

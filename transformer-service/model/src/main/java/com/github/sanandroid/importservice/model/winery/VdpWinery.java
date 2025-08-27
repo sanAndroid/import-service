@@ -1,8 +1,8 @@
-package com.github.sanandroid.importservice.model;
+package com.github.sanandroid.importservice.model.winery;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record Winery(
+public record VdpWinery(
     @JsonProperty("name") String name,
     @JsonProperty("street") String street,
     @JsonProperty("postal_city") String postalCity,
@@ -23,4 +23,4 @@ public record Winery(
     @JsonProperty("sustain_cert") String sustainabilityCert,
     @JsonProperty("lagen") String lagen,
     @JsonProperty("source_url") String sourceUrl
-) {}
+) implements WineryDto {}

@@ -1,6 +1,6 @@
-package com.github.sanandroid.importservice.model;
+package com.github.sanandroid.importservice.model.winery;
 
-public interface ImportedWinery {
+public interface WineryDto {
     String name();
     String street();
     String postalCity();
