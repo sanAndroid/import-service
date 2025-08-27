@@ -24,8 +24,8 @@ public class WineryProducer {
         this.objectMapper = objectMapper;
     }
 
-    public void sendMessage(WineryMessage wineryEntity) throws JsonProcessingException {
-        String message = objectMapper.writeValueAsString(wineryEntity);
+    public void sendMessage(WineryMessage wineryMessage) throws JsonProcessingException {
+        String message = objectMapper.writeValueAsString(wineryMessage);
         rabbitTemplate.convertAndSend(exchange, routingKey, message);
     }
 }
