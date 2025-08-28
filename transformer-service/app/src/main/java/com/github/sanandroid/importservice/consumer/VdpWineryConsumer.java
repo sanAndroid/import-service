@@ -1,6 +1,6 @@
 package com.github.sanandroid.importservice.consumer;
 
-import com.github.sanandroid.importservice.model.winery.VdpWinery;
+import com.github.sanandroid.importservice.model.winery.VdpWineryDto;
 import com.github.sanandroid.importservice.service.VdpWineryTransformationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class VdpWineryConsumer extends AbstractWineryConsumer<VdpWinery> {
+public class VdpWineryConsumer extends AbstractWineryConsumer<VdpWineryDto> {
 
     @Value("${app.rabbitmq.vdp-wineries-queue}")
     private String queueName;
@@ -26,7 +26,7 @@ public class VdpWineryConsumer extends AbstractWineryConsumer<VdpWinery> {
 
     @Autowired
     public VdpWineryConsumer(VdpWineryTransformationService abstractTransformationService, ObjectMapper objectMapper) {
-        super(VdpWinery.class, abstractTransformationService, objectMapper);
+        super(VdpWineryDto.class, abstractTransformationService, objectMapper);
     }
 
     @Override

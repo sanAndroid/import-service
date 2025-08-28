@@ -1,6 +1,6 @@
 package com.github.sanandroid.importservice.consumer;
 
-import com.github.sanandroid.importservice.model.winery.VdpWinery;
+import com.github.sanandroid.importservice.model.winery.VdpWineryDto;
 import com.github.sanandroid.importservice.service.VdpWineryTransformationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,13 +31,13 @@ class VdpWineryConsumerTest {
     @Test
     void receiveMessage_shouldProcessMessage() throws JsonProcessingException {
         String json = "{\"name\":\"testName\"}";
-        VdpWinery vdpWinery = new VdpWinery("testName", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        VdpWineryDto vdpWineryDto = new VdpWineryDto("testName", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         Message message = new Message(json.getBytes(StandardCharsets.UTF_8));
 
-        when(objectMapper.readValue(json, VdpWinery.class)).thenReturn(vdpWinery);
+        when(objectMapper.readValue(json, VdpWineryDto.class)).thenReturn(vdpWineryDto);
 
         consumer.receiveMessage(message);
 
-        verify(transformationService).transformAndSend(vdpWinery);
+        verify(transformationService).persistDto(vdpWineryDto);
     }
 }

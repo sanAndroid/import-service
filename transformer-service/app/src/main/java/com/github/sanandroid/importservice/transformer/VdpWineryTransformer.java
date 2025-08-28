@@ -1,15 +1,15 @@
 package com.github.sanandroid.importservice.transformer;
 
-import com.github.sanandroid.importservice.model.winery.VdpWinery;
+import com.github.sanandroid.importservice.model.winery.VdpWineryDto;
 import com.github.sanandroid.importservice.model.winery.WineryMessage;
 import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VdpWineryTransformer implements AbstractWineryTransformer<VdpWinery> {
+public class VdpWineryTransformer implements AbstractWineryTransformer<VdpWineryDto> {
 
     @Override
-    public WineryMessage transformToMessage(VdpWinery importedWinery) {
+    public WineryMessage transformToMessage(VdpWineryDto importedWinery) {
         return new WineryMessage(
                 importedWinery.name(),
                 importedWinery.website()
@@ -17,7 +17,7 @@ public class VdpWineryTransformer implements AbstractWineryTransformer<VdpWinery
     }
 
     @Override
-    public WineryEntity transformToEntity(VdpWinery importedWinery) {
+    public WineryEntity transformToEntity(VdpWineryDto importedWinery) {
         return new WineryEntity(
                 null,
                 null,

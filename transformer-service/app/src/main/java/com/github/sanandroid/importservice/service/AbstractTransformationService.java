@@ -13,7 +13,7 @@ public abstract class AbstractTransformationService<I, E, Repo extends JpaReposi
     protected final Repo repository;
     protected final TRANS  transformer;
 
-    public void transformAndSend(I input) {
+    public void persistDto(I input) {
         E result = transformer.transformToEntity(input);
         repository.save(result);
     }

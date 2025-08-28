@@ -1,0 +1,300 @@
+{
+  "$defs": {
+    "WineRating": {
+      "description": "Wine rating information.",
+      "properties": {
+        "source": {
+          "description": "Source of the rating (e.g., vivino, wine_searcher)",
+          "title": "Source",
+          "type": "string"
+        },
+        "rating": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null,
+          "title": "Rating",
+          "description": "Average rating"
+        },
+        "ratings_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "title": "Ratings Count",
+          "description": "Number of ratings"
+        },
+        "critics_rating": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null,
+          "title": "Critics Rating",
+          "description": "Average critic rating"
+        },
+        "critics_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "title": "Critics Count",
+          "description": "Number of critic ratings"
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "title": "WineRating",
+      "type": "object"
+    }
+  },
+  "description": "Wine data model for cross-language DTO generation",
+  "properties": {
+    "name": {
+      "description": "Wine name",
+      "title": "Name",
+      "type": "string"
+    },
+    "winery_name": {
+      "description": "Winery/Producer name",
+      "title": "Winery Name",
+      "type": "string"
+    },
+    "winery_website": {
+      "description": "Base winery website URL (e.g., https://www.weingut-rainer-sauer.de)",
+      "title": "Winery Website",
+      "type": "string"
+    },
+    "type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Type",
+      "description": "Wine type (red, white, rosé, etc.)"
+    },
+    "region": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Region",
+      "description": "Wine region"
+    },
+    "country": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Country",
+      "description": "Country of origin"
+    },
+    "grapes": {
+      "items": {
+        "type": "string"
+      },
+      "type": [
+        "array",
+        "null"
+      ],
+      "default": null,
+      "title": "Grapes",
+      "description": "Grape varieties"
+    },
+    "alcohol_content": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "default": null,
+      "title": "Alcohol Content",
+      "description": "Alcohol content percentage"
+    },
+    "vintage": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "default": null,
+      "title": "Vintage",
+      "description": "Vintage year"
+    },
+    "price": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "default": null,
+      "title": "Price",
+      "description": "Current price"
+    },
+    "price_range": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Price Range",
+      "description": "Price range"
+    },
+    "currency": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Currency",
+      "description": "Currency"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Description",
+      "description": "Wine description"
+    },
+    "quality_level": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Quality Level",
+      "description": "Quality level (e.g., Großes Gewächs, Grand Cru)"
+    },
+    "shop_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Shop Url",
+      "description": "Direct link to the wine's product page"
+    },
+    "bottle_size": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Bottle Size",
+      "description": "Bottle size (e.g., 750ml, 1.5L)"
+    },
+    "average_rating": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "default": null,
+      "title": "Average Rating",
+      "description": "Average rating/score"
+    },
+    "number_of_ratings": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "default": null,
+      "title": "Number Of Ratings",
+      "description": "Number of ratings"
+    },
+    "critic_scores": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "description": "Critic scores by source",
+      "title": "Critic Scores",
+      "type": "object"
+    },
+    "food_pairings": {
+      "items": {
+        "type": "string"
+      },
+      "type": [
+        "array",
+        "null"
+      ],
+      "default": null,
+      "title": "Food Pairings",
+      "description": "Recommended food pairings"
+    },
+    "serving_temperature": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Serving Temperature",
+      "description": "Recommended serving temperature"
+    },
+    "availability_status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Availability Status",
+      "description": "Availability status"
+    },
+    "sku": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Sku",
+      "description": "SKU/Product ID"
+    },
+    "ratings": {
+      "description": "List of ratings from different sources",
+      "items": {
+        "$ref": "#/$defs/WineRating"
+      },
+      "title": "Ratings",
+      "type": "array"
+    },
+    "image_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Image Url",
+      "description": "Wine image URL"
+    },
+    "source_urls": {
+      "description": "Source URLs",
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Urls",
+      "type": "array"
+    },
+    "scraped_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "title": "Scraped At",
+      "description": "When this data was scraped"
+    }
+  },
+  "required": [
+    "name",
+    "winery_name",
+    "winery_website"
+  ],
+  "title": "Wine",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

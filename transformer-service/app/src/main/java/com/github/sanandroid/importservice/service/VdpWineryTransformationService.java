@@ -2,7 +2,7 @@ package com.github.sanandroid.importservice.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.sanandroid.importservice.client.VectorizeClient;
-import com.github.sanandroid.importservice.model.winery.VdpWinery;
+import com.github.sanandroid.importservice.model.winery.VdpWineryDto;
 import com.github.sanandroid.importservice.model.winery.WineryMessage;
 import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import com.github.sanandroid.importservice.producer.WineryProducer;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VdpWineryTransformationService extends AbstractWineryTransformationService<VdpWinery> {
+public class VdpWineryTransformationService extends AbstractWineryTransformationService<VdpWineryDto> {
 
     final private VectorizeClient vectorizeClient;
     final private WineryProducer wineryProducer;
@@ -32,7 +32,7 @@ public class VdpWineryTransformationService extends AbstractWineryTransformation
     }
 
     @Transactional
-    public void transformAndSend(VdpWinery input) {
+    public void persistDto(VdpWineryDto input) {
         float[] embedding = vectorizeClient.getEmbeddingForWinery(input.name(),input.postalCity(),input.region(),"germany");
         WineryEntity entity = transformer.transformToEntity(input);
         entity.setEmbedding(embedding);

@@ -1,9 +1,9 @@
 package com.github.sanandroid.importservice.client;
 
-import com.github.sanandroid.importservice.grpc.vectorize.WineryVectorizeRequest;
-import com.github.sanandroid.importservice.grpc.vectorize.WineVectorizeRequest;
-import com.github.sanandroid.importservice.grpc.vectorize.WineryVectorizeResponse;
-import com.github.sanandroid.importservice.grpc.vectorize.VectorizeServiceGrpc;
+import com.github.sanandroid.grpc.vectorize.VectorizeResponse;
+import com.github.sanandroid.grpc.vectorize.VectorizeServiceGrpc;
+import com.github.sanandroid.grpc.vectorize.WineVectorizeRequest;
+import com.github.sanandroid.grpc.vectorize.WineryVectorizeRequest;
 import com.google.common.primitives.Floats;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class VectorizeClient {
                 .setRegion(region == null ? "" : region)
                 .setCountry(country == null ? "" : country)
                 .build();
-        WineryVectorizeResponse resp = stub.getWineryEmbeddingVector(req);
+        VectorizeResponse resp = stub.getWineryEmbeddingVector(req);
         return Floats.toArray(resp.getEmbeddingList());
     }
 
@@ -34,7 +34,7 @@ public class VectorizeClient {
             builder.addAllGrapes(grapes);
         }
         WineVectorizeRequest req = builder.build();
-        WineryVectorizeResponse resp = stub.getWineEmbeddingVector(req);
+        VectorizeResponse resp = stub.getWineEmbeddingVector(req);
         return Floats.toArray(resp.getEmbeddingList());
     }
 

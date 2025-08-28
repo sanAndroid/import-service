@@ -10,6 +10,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -52,13 +53,13 @@ public class WineEntity {
     private List<String> grapes;
 
     @Column(name = "alcohol_content")
-    private Float alcoholContent;
+    private BigDecimal alcoholContent;
 
     @Column(name = "vintage")
     private Integer vintage;
 
     @Column(name = "price")
-    private Float price;
+    private BigDecimal price;
 
     @Column(name = "price_range")
     private String priceRange;
@@ -79,7 +80,7 @@ public class WineEntity {
     private String bottleSize;
 
     @Column(name = "average_rating")
-    private Float averageRating;
+    private BigDecimal averageRating;
 
     @Column(name = "number_of_ratings")
     private Integer numberOfRatings;
@@ -87,7 +88,7 @@ public class WineEntity {
     @ElementCollection
     @MapKeyColumn(name = "critic_name")
     @Column(name = "score")
-    private Map<String, Float> criticScores;
+    private Map<String, BigDecimal> criticScores;
 
     @ElementCollection
     private List<String> foodPairings;

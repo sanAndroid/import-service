@@ -1,6 +1,6 @@
 package com.github.sanandroid.importservice.transformer;
 
-import com.github.sanandroid.importservice.model.winery.VdpWinery;
+import com.github.sanandroid.importservice.model.winery.VdpWineryDto;
 import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ class VdpWineryTransformerTest {
 
     @Test
     void transform_ToEntity_shouldReturnWinery() {
-        VdpWinery vdpWinery = new VdpWinery(
+        VdpWineryDto vdpWineryDto = new VdpWineryDto(
                 faker.company().name(),
                 faker.address().streetAddress(),
                 faker.address().city(),
@@ -37,27 +37,27 @@ class VdpWineryTransformerTest {
                 faker.internet().url()
         );
 
-        WineryEntity result = transformer.transformToEntity(vdpWinery);
+        WineryEntity result = transformer.transformToEntity(vdpWineryDto);
 
-        assertThat(result.getName()).isEqualTo(vdpWinery.name());
-        assertThat(result.getStreet()).isEqualTo(vdpWinery.street());
-        assertThat(result.getPostalCity()).isEqualTo(vdpWinery.postalCity());
-        assertThat(result.getPhone()).isEqualTo(vdpWinery.phone());
-        assertThat(result.getEmail()).isEqualTo(vdpWinery.email());
-        assertThat(result.getWebsite()).isEqualTo(vdpWinery.website());
-        assertThat(result.getOpeningHours()).isEqualTo(vdpWinery.openingHours());
-        assertThat(result.getOwners()).isEqualTo(vdpWinery.owners());
-        assertThat(result.getCellarMaster()).isEqualTo(vdpWinery.cellarMaster());
-        assertThat(result.getHectares()).isEqualTo(vdpWinery.hectares());
-        assertThat(result.getVarieties()).isEqualTo(vdpWinery.varieties());
-        assertThat(result.getGeology()).isEqualTo(vdpWinery.geology());
-        assertThat(result.getRegion()).isEqualTo(vdpWinery.region());
-        assertThat(result.getFeatures()).isEqualTo(vdpWinery.features());
-        assertThat(result.getSparkling()).isEqualTo(vdpWinery.sparkling());
-        assertThat(result.getMemberships()).isEqualTo(vdpWinery.memberships());
-        assertThat(result.getOrganicCert()).isEqualTo(vdpWinery.organicCert());
-        assertThat(result.getSustainabilityCert()).isEqualTo(vdpWinery.sustainabilityCert());
-        assertThat(result.getLagen()).isEqualTo(vdpWinery.lagen());
-        assertThat(result.getSourceUrl()).isEqualTo(vdpWinery.sourceUrl());
+        assertThat(result.getName()).isEqualTo(vdpWineryDto.name());
+        assertThat(result.getStreet()).isEqualTo(vdpWineryDto.street());
+        assertThat(result.getPostalCity()).isEqualTo(vdpWineryDto.postalCity());
+        assertThat(result.getPhone()).isEqualTo(vdpWineryDto.phone());
+        assertThat(result.getEmail()).isEqualTo(vdpWineryDto.email());
+        assertThat(result.getWebsite()).isEqualTo(vdpWineryDto.website());
+        assertThat(result.getOpeningHours()).isEqualTo(vdpWineryDto.openingHours());
+        assertThat(result.getOwners()).isEqualTo(vdpWineryDto.owners());
+        assertThat(result.getCellarMaster()).isEqualTo(vdpWineryDto.cellarMaster());
+        assertThat(result.getHectares()).isEqualTo(vdpWineryDto.hectares());
+        assertThat(result.getVarieties()).isEqualTo(vdpWineryDto.varieties());
+        assertThat(result.getGeology()).isEqualTo(vdpWineryDto.geology());
+        assertThat(result.getRegion()).isEqualTo(vdpWineryDto.region());
+        assertThat(result.getFeatures()).isEqualTo(vdpWineryDto.features());
+        assertThat(result.getSparkling()).isEqualTo(vdpWineryDto.sparkling());
+        assertThat(result.getMemberships()).isEqualTo(vdpWineryDto.memberships());
+        assertThat(result.getOrganicCert()).isEqualTo(vdpWineryDto.organicCert());
+        assertThat(result.getSustainabilityCert()).isEqualTo(vdpWineryDto.sustainabilityCert());
+        assertThat(result.getLagen()).isEqualTo(vdpWineryDto.lagen());
+        assertThat(result.getSourceUrl()).isEqualTo(vdpWineryDto.sourceUrl());
     }
 }

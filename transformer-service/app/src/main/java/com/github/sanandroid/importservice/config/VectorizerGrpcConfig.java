@@ -1,6 +1,6 @@
 package com.github.sanandroid.importservice.config;
 
-import com.github.sanandroid.importservice.grpc.vectorize.VectorizeServiceGrpc;
+import com.github.sanandroid.grpc.vectorize.VectorizeServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

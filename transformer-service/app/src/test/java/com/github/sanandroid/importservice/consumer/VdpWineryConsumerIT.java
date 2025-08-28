@@ -1,7 +1,7 @@
 package com.github.sanandroid.importservice.consumer;
 
 import com.github.sanandroid.importservice.client.VectorizeClient;
-import com.github.sanandroid.importservice.model.winery.VdpWinery;
+import com.github.sanandroid.importservice.model.winery.VdpWineryDto;
 import com.github.sanandroid.importservice.persistence.repository.WineryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -55,7 +55,7 @@ class VdpWineryConsumerIT {
     void shouldConsumeMessageAndTransform() {
         float[] embedding = new float[384];
         when(vectorizeClient.getEmbeddingForWinery(any(String.class), any(String.class), any(String.class), any(String.class))).thenReturn(embedding);
-        VdpWinery vdpWinery = new VdpWinery(
+        VdpWineryDto vdpWineryDto = new VdpWineryDto(
                 "test winery",
                 "test street",
                 "test city",
@@ -78,7 +78,7 @@ class VdpWineryConsumerIT {
                 "http://test.com"
         );
 
-        rabbitTemplate.convertAndSend("vdp_wineries", vdpWinery);
+        rabbitTemplate.convertAndSend("vdp_wineries", vdpWineryDto);
 
         await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
             var wineries = wineryRepository.findAll();

@@ -2,9 +2,9 @@ package com.github.sanandroid.importservice.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.sanandroid.importservice.model.wine.Wine;
+import com.github.sanandroid.importservice.model.wine.WineDto;
 import com.github.sanandroid.importservice.persistence.entity.WineEntity;
 import com.github.sanandroid.importservice.persistence.repository.WineRepository;
-import com.github.sanandroid.importservice.service.AbstractTransformationService;
 import com.github.sanandroid.importservice.service.WineTransformationService;
 import com.github.sanandroid.importservice.transformer.WineTransformer;
 import org.slf4j.Logger;
@@ -16,12 +16,12 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class WineConsumer extends AbstractConsumer<Wine, WineEntity, WineRepository, WineTransformer> {
+public class WineConsumer extends AbstractConsumer<WineDto, WineEntity, WineRepository, WineTransformer> {
 
     private static final Logger log = LoggerFactory.getLogger(WineConsumer.class);
 
     public WineConsumer(WineTransformationService transformationService, ObjectMapper objectMapper) {
-        super(Wine.class, transformationService, objectMapper);
+        super(WineDto.class, transformationService, objectMapper);
     }
 
     @Override

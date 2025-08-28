@@ -28,7 +28,7 @@ public abstract class AbstractConsumer<I, E, REPO extends JpaRepository<E,UUID>,
     protected void processMessage(String message) {
         try {
             I deserializedMessage = objectMapper.readValue(message, type);
-            abstractTransformationService.transformAndSend(deserializedMessage);
+            abstractTransformationService.persistDto(deserializedMessage);
         } catch (JsonProcessingException e) {
             System.err.println("Failed to deserialize message: " + message);
             e.printStackTrace();

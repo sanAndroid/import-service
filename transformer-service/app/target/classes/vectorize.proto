@@ -2,15 +2,16 @@ syntax = "proto3";
 
 package importservice;
 option java_multiple_files = true;
-option java_package = "com.github.sanandroid.importservice.grpc.vectorize";
+option java_package = "com.github.sanandroid.grpc.vectorize";
 option java_outer_classname = "VectorizeProto";
 
 
 service VectorizeService {
-  rpc GetEmbeddingVector (VectorizeRequest) returns (VectorizeResponse) {}
+  rpc GetWineryEmbeddingVector (WineryVectorizeRequest) returns (VectorizeResponse) {}
+  rpc GetWineEmbeddingVector (WineVectorizeRequest) returns (VectorizeResponse) {}
 }
 
-message VectorizeRequest {
+message WineryVectorizeRequest {
   string name = 1;
   string address = 2;
   string region = 3;
@@ -21,4 +22,11 @@ message VectorizeResponse {
   // 384-dim embedding
   repeated float embedding = 1; // packed by default in proto3
   int32 dim = 2;                // optional: echo dimension (e.g., 384
+}
+
+message WineVectorizeRequest {
+  string name = 1;
+  string type = 2;
+  string winery = 3;
+  repeated string grapes = 4;
 }

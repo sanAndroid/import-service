@@ -32,5 +32,5 @@ public record Wine(
         @JsonProperty("image_url") String imageUrl,
         @JsonProperty("source_urls") List<String> sourceUrls,
         @JsonProperty("scraped_at") String scrapedAt
-) implements WineDto {
+) {
 }

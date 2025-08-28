@@ -1,2 +1,5 @@
 com/github/sanandroid/importservice/persistence/converter/PgVectorFloatArrayConverter.class
+com/github/sanandroid/importservice/persistence/repository/WineryRepository.class
+com/github/sanandroid/importservice/persistence/entity/WineEntity.class
+com/github/sanandroid/importservice/persistence/repository/WineRepository.class
 com/github/sanandroid/importservice/persistence/entity/WineryEntity.class

@@ -1,4 +1,0 @@
-com/github/sanandroid/importservice/consumer/VdpWineryConsumerTest.class
-com/github/sanandroid/importservice/config/TestRabbitTemplateConfig.class
-com/github/sanandroid/importservice/transformer/VdpWineryTransformerTest.class
-com/github/sanandroid/importservice/consumer/VdpWineryConsumerIT.class
