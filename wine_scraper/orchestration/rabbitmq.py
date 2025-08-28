@@ -2,13 +2,13 @@
 
 import asyncio
 import json
-import logging
-from typing import Dict, Any, Optional, List
+from typing import Optional, List
 from dataclasses import dataclass
 
 import aio_pika
 from aio_pika.abc import AbstractIncomingMessage
 
+from config.settings import settings
 from pipelines.models import Wine
 from utils.observability import get_logger
 
@@ -24,141 +24,110 @@ class WineryMessage:
 
 class RabbitMQConsumer:
     """RabbitMQ consumer for wineries queue."""
-    
-    def __init__(
-        self,
-        connection_url: str,
-        queue_name: str = "wineries",
-        exchange_name: str = "wines",
-    ):
-        self.connection_url = connection_url
-        self.queue_name = queue_name
-        self.exchange_name = exchange_name
+
+    def __init__(self):
+        self.connection_url = f"amqp://{settings.rabbitmq_user}:{settings.rabbitmq_password}@{settings.rabbitmq_host}:{settings.rabbitmq_port}/"
+        self.queue_name = settings.rabbitmq_wineries_queue
+        self.exchange_name = settings.rabbitmq_wines_exchange
+        self.routing_key = settings.rabbitmq_winery_routing_key
         self.connection: Optional[aio_pika.abc.AbstractConnection] = None
         self.channel: Optional[aio_pika.abc.AbstractChannel] = None
         self.queue: Optional[aio_pika.abc.AbstractQueue] = None
         self.exchange: Optional[aio_pika.abc.AbstractExchange] = None
-        
+
     async def connect(self) -> None:
         """Establish connection to RabbitMQ."""
         try:
             self.connection = await aio_pika.connect_robust(self.connection_url)
             self.channel = await self.connection.channel()
-            
-            # Declare queue
-            self.queue = await self.channel.declare_queue(
-                self.queue_name,
-                durable=True,
-                auto_delete=False
-            )
-            
-            # Declare exchange
-            self.exchange = await self.channel.declare_exchange(
-                self.exchange_name,
-                aio_pika.ExchangeType.TOPIC,
-                durable=True
-            )
 
-            # Bind queue to exchange
-            await self.queue.bind(self.exchange, routing_key="winery.#")
-            
+            self.queue = await self.channel.declare_queue(
+                self.queue_name, durable=True, auto_delete=False
+            )
+            self.exchange = await self.channel.declare_exchange(
+                self.exchange_name, aio_pika.ExchangeType.TOPIC, durable=True
+            )
+            await self.queue.bind(self.exchange, routing_key=self.routing_key)
             logger.info(f"Connected to RabbitMQ: queue={self.queue_name}, exchange={self.exchange_name}")
-            
         except Exception as e:
             logger.error(f"Failed to connect to RabbitMQ: {e}")
             raise
-    
+
     async def disconnect(self) -> None:
         """Close RabbitMQ connection."""
         if self.connection:
             await self.connection.close()
             logger.info("Disconnected from RabbitMQ")
-    
+
     async def consume(self, callback) -> None:
         """Start consuming messages from the wineries queue."""
         if not self.connection or not self.queue:
             raise RuntimeError("Not connected to RabbitMQ")
-        
+
         async def process_message(message: AbstractIncomingMessage) -> None:
             async with message.process():
                 try:
                     body = json.loads(message.body.decode())
-                    winery_msg = WineryMessage(
-                        url=body["url"],
-                        name=body["name"]
-                    )
-                    
+                    winery_msg = WineryMessage(url=body["url"], name=body["name"])
                     logger.info(f"Processing winery: {winery_msg.name} ({winery_msg.url})")
                     await callback(winery_msg)
-                    
                 except KeyError as e:
                     logger.error(f"Invalid message format: missing {e}")
                 except json.JSONDecodeError as e:
                     logger.error(f"Invalid JSON in message: {e}")
                 except Exception as e:
                     logger.error(f"Error processing message: {e}")
-        
+
         await self.queue.consume(process_message)
         logger.info("Started consuming messages from wineries queue")
 
 
 class RabbitMQProducer:
     """RabbitMQ producer for wines queue."""
-    
-    def __init__(
-        self,
-        connection_url: str,
-        exchange_name: str = "wines",
-    ):
-        self.connection_url = connection_url
-        self.exchange_name = exchange_name
+
+    def __init__(self):
+        self.connection_url = f"amqp://{settings.rabbitmq_user}:{settings.rabbitmq_password}@{settings.rabbitmq_host}:{settings.rabbitmq_port}/"
+        self.exchange_name = settings.rabbitmq_wines_exchange
+        self.routing_key = settings.rabbitmq_wine_scraped_routing_key
         self.connection: Optional[aio_pika.abc.AbstractConnection] = None
         self.channel: Optional[aio_pika.abc.AbstractChannel] = None
         self.exchange: Optional[aio_pika.abc.AbstractExchange] = None
-        
+
     async def connect(self) -> None:
         """Establish connection to RabbitMQ."""
         try:
             self.connection = await aio_pika.connect_robust(self.connection_url)
             self.channel = await self.connection.channel()
-            
             self.exchange = await self.channel.declare_exchange(
-                self.exchange_name,
-                aio_pika.ExchangeType.TOPIC,
-                durable=True
+                self.exchange_name, aio_pika.ExchangeType.TOPIC, durable=True
             )
-            
             logger.info(f"Connected to RabbitMQ producer: exchange={self.exchange_name}")
-            
         except Exception as e:
             logger.error(f"Failed to connect to RabbitMQ producer: {e}")
             raise
-    
+
     async def disconnect(self) -> None:
         """Close RabbitMQ connection."""
         if self.connection:
             await self.connection.close()
             logger.info("Disconnected from RabbitMQ producer")
-    
-    async def publish_wines(self, wines: List[Wine], routing_key: str = "wine.scraped") -> None:
+
+    async def publish_wines(self, wines: List[Wine]) -> None:
         """Publish wine data to the wines exchange."""
         if not self.connection or not self.exchange:
             raise RuntimeError("Not connected to RabbitMQ")
-        
+
         try:
             for wine in wines:
                 message_body = json.dumps(wine.dict(), default=str)
                 message = aio_pika.Message(
                     message_body.encode(),
                     content_type="application/json",
-                    delivery_mode=aio_pika.DeliveryMode.PERSISTENT
+                    delivery_mode=aio_pika.DeliveryMode.PERSISTENT,
                 )
-                
-                await self.exchange.publish(message, routing_key=routing_key)
+                await self.exchange.publish(message, routing_key=self.routing_key)
                 logger.debug(f"Published wine: {wine.name}")
-            
             logger.info(f"Published {len(wines)} wines to exchange")
-            
         except Exception as e:
             logger.error(f"Failed to publish wines: {e}")
             raise
@@ -166,23 +135,22 @@ class RabbitMQProducer:
 
 class RabbitMQManager:
     """Manages both consumer and producer connections."""
-    
-    def __init__(self, connection_url: str):
-        self.connection_url = connection_url
-        self.consumer = RabbitMQConsumer(connection_url)
-        self.producer = RabbitMQProducer(connection_url)
-    
+
+    def __init__(self):
+        self.consumer = RabbitMQConsumer()
+        self.producer = RabbitMQProducer()
+
     async def __aenter__(self):
         """Async context manager entry."""
         await self.consumer.connect()
         await self.producer.connect()
         return self
-    
+
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         """Async context manager exit."""
         await self.consumer.disconnect()
         await self.producer.disconnect()
-    
+
     async def process_wineries(self, scraper_callback) -> None:
         """Process wineries from queue using the provided scraper callback."""
         await self.consumer.consume(scraper_callback)

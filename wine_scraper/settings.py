@@ -41,13 +41,7 @@ class Settings(BaseSettings):
     output_dir: str = Field(default="data", env="OUTPUT_DIR")
     csv_filename: str = Field(default="wines.csv", env="CSV_FILENAME")
     
-    # Wine sites configuration
-    vivino_base_url: str = Field(default="https://www.vivino.com", env="VIVINO_BASE_URL")
-    wine_searcher_base_url: str = Field(default="https://www.wine-searcher.com", env="WINE_SEARCHER_BASE_URL")
-    
-    # OpenAI settings (for legacy support)
-    openai_api_key: Optional[str] = Field(default=None, env="OPENAI_API_KEY")
-    
+        
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

@@ -22,39 +22,11 @@ DEFAULT_HEADERS = {
 
 # Wine sites
 WINE_SITES = {
-    "vivino": {
-        "name": "Vivino",
-        "base_url": "https://www.vivino.com",
-        "search_path": "/search/wines",
-    },
-    "wine_searcher": {
-        "name": "Wine-Searcher",
-        "base_url": "https://www.wine-searcher.com",
-        "search_path": "/find",
-    },
-    "tbsg": {
-        "name": "TBSG",
-        "base_url": "https://www.tbsg.de",
-        "search_path": "/wein",
-    },
+    # Currently only winery direct scraping is used
 }
 
-# CSV column names
-WINE_CSV_COLUMNS = [
-    "name",
-    "type",
-    "image_link",
-    "price",
-    "vivino_rating",
-    "vivino_ratings_count",
-    "vivino_winery",
-    "vivino_wine_name",
-    "ws_user_rating",
-    "ws_user_count",
-    "ws_critics_rating",
-    "ws_critics_count",
-    "ws_wine_name",
-]
+# CSV column names - deprecated format, not used by current pipeline
+WINE_CSV_COLUMNS = []
 
 # Retry configuration
 RETRY_CONFIG = {

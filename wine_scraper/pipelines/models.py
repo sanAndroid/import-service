@@ -1,6 +1,6 @@
 """Pydantic models for structured wine data."""
 
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Union
 from pydantic import BaseModel, Field, validator
 
 
@@ -18,7 +18,7 @@ class Wine(BaseModel):
     """Wine data model."""
     
     name: str = Field(..., description="Wine name")
-    winery: str = Field(..., description="Winery/Producer name")
+    winery_name: str = Field(..., description="Winery/Producer name")
     winery_website: str = Field(..., description="Base winery website URL (e.g., https://www.weingut-rainer-sauer.de)")
     type: Optional[str] = Field(None, description="Wine type (red, white, rosé, etc.)")
     region: Optional[str] = Field(None, description="Wine region")
@@ -39,7 +39,7 @@ class Wine(BaseModel):
     bottle_size: Optional[str] = Field(None, description="Bottle size (e.g., 750ml, 1.5L)")
     average_rating: Optional[float] = Field(None, description="Average rating/score")
     number_of_ratings: Optional[int] = Field(None, description="Number of ratings")
-    critic_scores: Optional[Dict[str, float]] = Field(None, description="Critic scores by source")
+    critic_scores: dict[str, float] = Field(default_factory=dict, description="Critic scores by source")
     food_pairings: Optional[List[str]] = Field(None, description="Recommended food pairings")
     serving_temperature: Optional[str] = Field(None, description="Recommended serving temperature")
     availability_status: Optional[str] = Field(None, description="Availability status")
