@@ -237,7 +237,7 @@ def list_sources() -> None:
 @app.command()
 def service(
     rabbitmq_url: str = typer.Option(
-        "amqp://guest:guest@localhost:5672/",
+        "amqp://rabbitmq:rabbitmq@localhost:5672/",
         "--rabbitmq-url",
         "-r",
         help="RabbitMQ connection URL",

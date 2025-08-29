@@ -1,83 +1,86 @@
 # How-To Guide
 
-This guide provides detailed instructions on how to use and extend the `scraperhub` tool.
+This guide provides detailed instructions on how to use and extend the wine scraper service.
 
 ## Quick Start
 
-1. **Install dependencies:**
+1. **Install dependencies using Make:**
    ```bash
-   pip install -r requirements.txt
+   make install
    ```
 
-2. **Run a search:**
+2. **Install Playwright browsers:**
    ```bash
-   python -m scraperhub.cli search "Chateau Lafite Rothschild"
+   playwright install chromium
    ```
 
-3. **Find the results:** The scraped data will be saved in the `data/` directory by default.
+3. **Run a test scrape:**
+   ```bash
+   make run-batch-test
+   ```
+
+4. **Find the results:** The scraped data will be saved in JSON files in the `./data/` directory.
 
 ## Detailed Usage
 
-### Performing a Single Wine Search
+### Starting the RabbitMQ Service
 
-To search for a single wine, use the `search` command. You must provide a search query.
+The service processes winery messages from the `wineries_message` queue and publishes wine data to the `wines` exchange.
 
+**Production mode (with RabbitMQ):**
 ```bash
-python -m scraperhub.cli search "Opus One"
+python -m orchestration start
+```
+
+**Dry-run mode (no RabbitMQ):**
+```bash
+python -m orchestration start --dry-run
+```
+
+### Processing Wineries from File
+
+To scrape wines from a list of wineries in a file:
+
+**Example `test_wineries.txt`:**
+
+```
+https://www.weingut-rainer-sauer.de/,Weingut Rainer Sauer
+https://www.buerklin-wolf.de/,Bürklin-Wolf
+https://www.leitz-wein.de/,Weingut Leitz
+```
+
+**Production mode (publish to RabbitMQ):**
+```bash
+python -m orchestration process-file test_wineries.txt
+```
+
+**Dry-run mode (save to files):**
+```bash
+python -m orchestration process-file test_wineries.txt --dry-run
 ```
 
 **Options:**
+- `--dry-run`: Save results to JSON files instead of sending to RabbitMQ
+- `--output-dir`: Directory for dry-run results (default: `./data`)
 
-- `--source` or `-s`: Specify the source to scrape from (`vivino`, `wine_searcher`, or `all`). Defaults to `all`.
-- `--output` or `-o`: Specify the output format (`csv`, `json`, or `both`). Defaults to `csv`.
-- `--limit` or `-l`: The maximum number of results to return per source. Defaults to 5.
-- `--save-html`: Save the HTML of the search results page for debugging.
+### Message Format
 
-**Example:**
+The service expects messages in the `wineries_message` queue with the following format:
 
-```bash
-python -m scraperhub.cli search "Opus One" --source vivino --output json --limit 3
+```json
+{
+  "name": "Weingut Leitz",
+  "website": "https://www.leitz-wein.de/"
+}
 ```
 
-### Performing a Batch Search
+Published wine data will be sent to the `wines` exchange with routing key `wine.scraped`.
 
-To search for multiple wines from a file, use the `batch-search` command. You need to provide a path to a text file containing one wine name per line.
+### Queue Configuration
 
-**Example `wines.txt`:**
-
-```
-Dominus Estate
-Harlan Estate
-Sine Qua Non
-```
-
-**Command:**
-
-```bash
-python -m scraperhub.cli batch-search wines.txt
-```
-
-**Options:**
-
-- `--source` or `-s`: The source to scrape from. Defaults to `all`.
-- `--output` or `-o`: The output format. Defaults to `csv`.
-- `--limit` or `-l`: The maximum number of results per query per source. Defaults to 3.
-
-### Listing Available Sources
-
-To see a list of all available scraping sources, use the `list-sources` command.
-
-```bash
-python -m scraperhub.cli list-sources
-```
-
-### Clearing the Cache
-
-To clear all cached data, use the `clean-cache` command.
-
-```bash
-python -m scraperhub.cli clean-cache
-```
+- **Input queue**: `wineries_message`
+- **Output exchange**: `wines` (Topic exchange)
+- **Routing key**: `wine.scraped`
 
 ## Adding a New Scraper
 
@@ -117,6 +120,43 @@ To add a new scraper for a new source, follow these steps:
 
     In `scraperhub/cli.py`, update the `search` and `batch_search` commands to include your new scraper.
 
+### Running the RabbitMQ Service
+
+To start the service in RabbitMQ mode (production):
+
+```bash
+python cli.py service --rabbitmq-url amqp://rabbitmq:rabbitmq@localhost:5672/
+```
+
+To start in dry-run mode (no RabbitMQ):
+
+```bash
+python cli.py service --dry-run
+```
+
+### Using Make Commands
+
+The project includes a Makefile with convenient commands:
+
+- `make install`: Create venv and install dependencies
+- `make run-service`: Start RabbitMQ service mode
+- `make run-dry-run`: Start service in dry-run mode
+- `make run-batch-test`: Test scraping with sample wineries
+- `make run-single`: Test scraping a single winery
+- `make clean`: Clean cache and temporary files
+- `make lint`: Run code linting
+- `make test`: Run basic tests
+
+### Improving the Winery Scraper
+
+The current implementation focuses on direct winery website scraping. To improve the winery scraper:
+
+1. **Enhance wine detection:** Modify the `is_wine_url()` method in `scrapers/winery.py` to better identify actual wine product pages vs navigation pages.
+
+2. **Add specific selectors:** Update the CSS selectors in `extract_wine_details()` to match the specific structure of target winery websites.
+
+3. **Improve URL discovery:** Enhance the `discover_wine_urls()` method to better find wine product pages on different winery websites.
+
 ## Troubleshooting
 
 - **Scraping is blocked or fails:** Websites may change their layout or implement anti-scraping measures. If a scraper is failing, you may need to update the selectors in the corresponding scraper file. Using the `--save-html` flag can help with debugging.
@@ -128,6 +168,8 @@ To add a new scraper for a new source, follow these steps:
   ```bash
   playwright install
   ```
+
+- **Validation errors:** If you encounter Pydantic validation errors, check that your Wine model fields match the data being extracted.
 
 ## Cross-Language Type Sharing
 
@@ -192,28 +234,28 @@ import java.util.Map;
 
 public record Wine(
     String name,
-    String winery,
-    String wineryWebsite,
+    String winery_name,
+    String winery_website,
     String type,
     String region,
     String country,
     List<String> grapes,
-    Double alcoholContent,
+    Double alcohol_content,
     Integer vintage,
     Double price,
     String description,
-    String qualityLevel,
-    String shopUrl,
-    String bottleSize,
-    Double averageRating,
-    Integer numberOfRatings,
-    Map<String, Double> criticScores,
-    List<String> foodPairings,
-    String servingTemperature,
-    String availabilityStatus,
+    String quality_level,
+    String shop_url,
+    String bottle_size,
+    Double average_rating,
+    Integer number_of_ratings,
+    Map<String, Double> critic_scores,
+    List<String> food_pairings,
+    String serving_temperature,
+    String availability_status,
     String sku,
-    String imageUrl,
-    String scrapedAt
+    String image_url,
+    String scraped_at
 ) {}
 ```
 
@@ -222,7 +264,7 @@ public record Wine(
 ```python
 # Python → JSON
 from pipelines.models import Wine
-wine = Wine(name="Riesling", winery="Leitz", winery_website="https://leitz.de")
+wine = Wine(name="Riesling", winery_name="Leitz", winery_website="https://leitz.de")
 json_data = wine.model_dump_json()
 ```
 

@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface WineryRepository extends JpaRepository<WineryEntity, UUID> {
+public interface WineService extends JpaRepository<WineryEntity, UUID> {
 
 
     @Modifying

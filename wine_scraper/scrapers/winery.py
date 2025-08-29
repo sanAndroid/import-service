@@ -77,33 +77,42 @@ class WineryScraper(BaseScraper):
             "/weine"
         ]
         
-        async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True)
-            context = await browser.new_context()
+        browser = None
+        try:
+            playwright = await async_playwright().start()
+            browser = await playwright.chromium.launch(headless=True)
+            context = await browser.new_context(
+                viewport={'width': 1920, 'height': 1080},
+                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            )
             page = await context.new_page()
             
-            try:
-                # Try to find wine URLs from shop pages
-                for shop_path in shop_paths:
-                    shop_url = urljoin(self.base_url, shop_path)
-                    try:
-                        await page.goto(shop_url, wait_until="networkidle", timeout=30000)
+            # Increase timeout settings
+            page.set_default_timeout(120000)  # 120 seconds for complex sites
+            page.set_default_navigation_timeout(120000)
+            
+            # Try to find wine URLs from shop pages
+            for shop_path in shop_paths:
+                shop_url = urljoin(self.base_url, shop_path)
+                try:
+                    await page.goto(shop_url, wait_until="domcontentloaded", timeout=120000)
+                    
+                    # Look for wine product links
+                    wine_links = await self.extract_wine_links_from_page(page)
+                    wine_urls.extend(wine_links)
+                    
+                    if wine_links:  # Found some wines, no need to try other paths
+                        break
                         
-                        # Look for wine product links
-                        wine_links = await self.extract_wine_links_from_page(page)
-                        wine_urls.extend(wine_links)
-                        
-                        if wine_links:  # Found some wines, no need to try other paths
-                            break
-                            
-                    except Exception:
-                        continue
+                except Exception:
+                    continue
+            
+            # If no shop found, try crawling main site
+            if not wine_urls:
+                wine_urls = await self.crawl_for_wine_urls(page, self.base_url)
                 
-                # If no shop found, try crawling main site
-                if not wine_urls:
-                    wine_urls = await self.crawl_for_wine_urls(page, self.base_url)
-                
-            finally:
+        finally:
+            if browser:
                 await browser.close()
         
         # Remove duplicates and filter valid URLs
@@ -158,7 +167,7 @@ class WineryScraper(BaseScraper):
             visited.add(url)
             
             try:
-                await page.goto(url, wait_until="networkidle", timeout=10000)
+                await page.goto(url, wait_until="networkidle", timeout=120000)
                 
                 # Check if this is a wine product page
                 if self.is_wine_url(url):
@@ -583,7 +592,7 @@ class WineryScraper(BaseScraper):
         """Create Wine model from extracted data."""
         return Wine(
             name=wine_data.get('name', 'Unknown Wine'),
-            winery=wine_data.get('winery', self.winery_name),
+            winery_name=wine_data.get('winery', self.winery_name),
             winery_website=self.base_url,
             type=wine_data.get('type'),
             region=wine_data.get('region'),
@@ -596,10 +605,10 @@ class WineryScraper(BaseScraper):
             image_url=wine_data.get('image_url'),
             quality_level=wine_data.get('quality_level'),
             shop_url=wine_data.get('url'),
-            bottle_size=wine_data.get('bottle_size'),
+            bottle_size=wine_data.get('bottle_size', '750ml'),
             average_rating=wine_data.get('average_rating'),
             number_of_ratings=wine_data.get('number_of_ratings'),
-            critic_scores=wine_data.get('critic_scores'),
+            critic_scores=wine_data.get('critic_scores', {}),
             food_pairings=wine_data.get('food_pairings'),
             serving_temperature=wine_data.get('serving_temperature'),
             availability_status=wine_data.get('availability_status'),

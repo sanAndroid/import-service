@@ -6,7 +6,7 @@ import com.github.sanandroid.importservice.model.winery.VdpWineryDto;
 import com.github.sanandroid.importservice.model.winery.WineryMessage;
 import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import com.github.sanandroid.importservice.producer.WineryProducer;
-import com.github.sanandroid.importservice.persistence.repository.WineryRepository;
+import com.github.sanandroid.importservice.persistence.repository.WineryTransformationService;
 import com.github.sanandroid.importservice.transformer.VdpWineryTransformer;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class VdpWineryTransformationService extends AbstractWineryTransformation
     private static final Logger log = LoggerFactory.getLogger(VdpWineryTransformationService.class);
 
     protected VdpWineryTransformationService(
-            WineryRepository repository,
+            WineryTransformationService repository,
             VdpWineryTransformer transformer,
             VectorizeClient vectorizeClient,
             WineryProducer wineryProducer
@@ -33,7 +33,7 @@ public class VdpWineryTransformationService extends AbstractWineryTransformation
 
     @Transactional
     public void persistDto(VdpWineryDto input) {
-        float[] embedding = vectorizeClient.getEmbeddingForWinery(input.name(),input.postalCity(),input.region(),"germany");
+        float[] embedding = vectorizeClient.getEmbeddingForWinery(input.getName(),input.getPostalCity(),input.getRegion(),"germany");
         WineryEntity entity = transformer.transformToEntity(input);
         entity.setEmbedding(embedding);
         repository.upsert(entity);

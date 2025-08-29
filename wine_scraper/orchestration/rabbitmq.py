@@ -18,7 +18,7 @@ logger = get_logger("rabbitmq")
 @dataclass
 class WineryMessage:
     """Message format from wineries queue."""
-    url: str
+    website: str
     name: str
 
 
@@ -41,14 +41,27 @@ class RabbitMQConsumer:
             self.connection = await aio_pika.connect_robust(self.connection_url)
             self.channel = await self.connection.channel()
 
+            # Declare the wineries queue for consuming
             self.queue = await self.channel.declare_queue(
                 self.queue_name, durable=True, auto_delete=False
             )
+            
+            # Declare the wines exchange
             self.exchange = await self.channel.declare_exchange(
                 self.exchange_name, aio_pika.ExchangeType.TOPIC, durable=True
             )
+            
+            # Bind wineries queue to winery routing key
             await self.queue.bind(self.exchange, routing_key=self.routing_key)
+            
+            # Declare and bind the wines queue to the wines exchange
+            wines_queue = await self.channel.declare_queue(
+                "wines", durable=True, auto_delete=False
+            )
+            await wines_queue.bind(self.exchange, routing_key="wine.*")
+            
             logger.info(f"Connected to RabbitMQ: queue={self.queue_name}, exchange={self.exchange_name}")
+            logger.info("Bound wines queue to wines exchange with routing key 'wine.*'")
         except Exception as e:
             logger.error(f"Failed to connect to RabbitMQ: {e}")
             raise
@@ -67,16 +80,41 @@ class RabbitMQConsumer:
         async def process_message(message: AbstractIncomingMessage) -> None:
             async with message.process():
                 try:
-                    body = json.loads(message.body.decode())
-                    winery_msg = WineryMessage(url=body["url"], name=body["name"])
-                    logger.info(f"Processing winery: {winery_msg.name} ({winery_msg.url})")
+                    body_raw = message.body.decode()
+                    logger.debug(f"Raw message: {body_raw}")
+                    
+                    # Handle double-encoded JSON
+                    try:
+                        body = json.loads(body_raw)
+                        if isinstance(body, str):
+                            # Double-encoded JSON
+                            body = json.loads(body)
+                    except json.JSONDecodeError:
+                        logger.error(f"Invalid JSON format: {body_raw}")
+                        return
+                    
+                    if not isinstance(body, dict):
+                        logger.warning(f"Received non-dict message: {type(body)} - {body}")
+                        return
+                    
+                    # Handle null website values
+                    website = body.get("website") or body.get("url", "")
+                    if not website:
+                        logger.warning(f"Received message with null/empty website for winery: {body.get('name', 'unknown')}")
+                        return
+                        
+                    winery_msg = WineryMessage(website=website, name=body["name"])
+                    logger.info(f"Processing winery: {winery_msg.name} ({winery_msg.website})")
                     await callback(winery_msg)
                 except KeyError as e:
-                    logger.error(f"Invalid message format: missing {e}")
+                    logger.error(f"Invalid message format: missing field {e}. Expected: {{\"name\":\"...\",\"website\":\"...\"}}")
+                    logger.error(f"Received: {body_raw if 'body_raw' in locals() else 'unknown'}")
                 except json.JSONDecodeError as e:
                     logger.error(f"Invalid JSON in message: {e}")
+                    logger.error(f"Raw message: {body_raw if 'body_raw' in locals() else message.body.decode()}")
                 except Exception as e:
                     logger.error(f"Error processing message: {e}")
+                    logger.error(f"Message type: {type(body) if 'body' in locals() else 'unknown'}")
 
         await self.queue.consume(process_message)
         logger.info("Started consuming messages from wineries queue")
@@ -98,10 +136,20 @@ class RabbitMQProducer:
         try:
             self.connection = await aio_pika.connect_robust(self.connection_url)
             self.channel = await self.connection.channel()
+            
+            # Declare the wines exchange
             self.exchange = await self.channel.declare_exchange(
                 self.exchange_name, aio_pika.ExchangeType.TOPIC, durable=True
             )
+            
+            # Declare and bind the wines queue to the wines exchange
+            wines_queue = await self.channel.declare_queue(
+                "wines", durable=True, auto_delete=False
+            )
+            await wines_queue.bind(self.exchange, routing_key="wine.*")
+            
             logger.info(f"Connected to RabbitMQ producer: exchange={self.exchange_name}")
+            logger.info("Bound wines queue to wines exchange with routing key 'wine.*'")
         except Exception as e:
             logger.error(f"Failed to connect to RabbitMQ producer: {e}")
             raise

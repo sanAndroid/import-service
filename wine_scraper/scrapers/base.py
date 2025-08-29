@@ -98,11 +98,15 @@ class BaseScraper(ABC):
             
             page = await context.new_page()
             
+            # Increase timeout settings
+            page.set_default_timeout(120000)  # 120 seconds for complex sites
+            page.set_default_navigation_timeout(120000)
+            
             try:
-                await page.goto(url, wait_until="networkidle")
+                await page.goto(url, wait_until="domcontentloaded", timeout=120000)
                 
                 if selector:
-                    await page.wait_for_selector(selector, timeout=30000)
+                    await page.wait_for_selector(selector, timeout=120000)
                 
                 content = await page.content()
                 
