@@ -5,14 +5,18 @@ import com.github.sanandroid.importservice.model.winery.WineryMessage;
 import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class VdpWineryTransformer implements AbstractWineryTransformer<VdpWineryDto> {
 
     @Override
     public WineryMessage transformToMessage(VdpWineryDto importedWinery) {
         return new WineryMessage(
-                importedWinery.name(),
-                importedWinery.website()
+                importedWinery.getName(),
+                Optional.ofNullable(importedWinery.getWebsite())
+                        .map(uri -> uri.getScheme() + "://" + uri.getHost())
+                        .orElse(null)
         );
     }
 
@@ -21,26 +25,28 @@ public class VdpWineryTransformer implements AbstractWineryTransformer<VdpWinery
         return new WineryEntity(
                 null,
                 null,
-                importedWinery.name(),
-                importedWinery.street(),
-                importedWinery.postalCity(),
-                importedWinery.phone(),
-                importedWinery.email(),
-                importedWinery.website(),
-                importedWinery.openingHours(),
-                importedWinery.owners(),
-                importedWinery.cellarMaster(),
-                importedWinery.hectares(),
-                importedWinery.varieties(),
-                importedWinery.geology(),
-                importedWinery.region(),
-                importedWinery.features(),
-                importedWinery.sparkling(),
-                importedWinery.memberships(),
-                importedWinery.organicCert(),
-                importedWinery.sustainabilityCert(),
-                importedWinery.lagen(),
-                importedWinery.sourceUrl(),
+                importedWinery.getName(),
+                importedWinery.getStreet(),
+                importedWinery.getPostalCity(),
+                importedWinery.getPhone(),
+                importedWinery.getEmail(),
+                importedWinery.getSourceUrl(),
+                importedWinery.getOpeningHours(),
+                importedWinery.getOwners(),
+                importedWinery.getCellarMaster(),
+                importedWinery.getHectares(),
+                importedWinery.getVarieties(),
+                importedWinery.getGeology(),
+                importedWinery.getRegion(),
+                importedWinery.getFeatures(),
+                importedWinery.getSparkling(),
+                importedWinery.getMemberships(),
+                importedWinery.getOrganicCert(),
+                importedWinery.getSustainabilityCert(),
+                importedWinery.getLagen(),
+                Optional.ofNullable(importedWinery.getWebsite())
+                        .map(uri -> uri.getScheme() + "://" + uri.getHost())
+                        .orElse(null),
                 null,
                 null
         );

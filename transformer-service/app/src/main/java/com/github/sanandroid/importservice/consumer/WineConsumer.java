@@ -1,11 +1,10 @@
 package com.github.sanandroid.importservice.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.sanandroid.importservice.model.wine.Wine;
-import com.github.sanandroid.importservice.model.wine.WineDto;
+import com.github.sanandroid.importservice.model.winery.WineDto;
 import com.github.sanandroid.importservice.persistence.entity.WineEntity;
 import com.github.sanandroid.importservice.persistence.repository.WineRepository;
-import com.github.sanandroid.importservice.service.WineTransformationService;
+import com.github.sanandroid.importservice.service.WineService;
 import com.github.sanandroid.importservice.transformer.WineTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,7 @@ public class WineConsumer extends AbstractConsumer<WineDto, WineEntity, WineRepo
 
     private static final Logger log = LoggerFactory.getLogger(WineConsumer.class);
 
-    public WineConsumer(WineTransformationService transformationService, ObjectMapper objectMapper) {
+    public WineConsumer(WineService transformationService, ObjectMapper objectMapper) {
         super(WineDto.class, transformationService, objectMapper);
     }
 

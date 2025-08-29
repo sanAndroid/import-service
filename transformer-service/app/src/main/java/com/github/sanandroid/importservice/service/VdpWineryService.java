@@ -6,7 +6,7 @@ import com.github.sanandroid.importservice.model.winery.VdpWineryDto;
 import com.github.sanandroid.importservice.model.winery.WineryMessage;
 import com.github.sanandroid.importservice.persistence.entity.WineryEntity;
 import com.github.sanandroid.importservice.producer.WineryProducer;
-import com.github.sanandroid.importservice.persistence.repository.WineryTransformationService;
+import com.github.sanandroid.importservice.persistence.repository.WineryRepository;
 import com.github.sanandroid.importservice.transformer.VdpWineryTransformer;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -14,14 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VdpWineryTransformationService extends AbstractWineryTransformationService<VdpWineryDto> {
+public class VdpWineryService extends WineryService<VdpWineryDto> {
 
     final private VectorizeClient vectorizeClient;
     final private WineryProducer wineryProducer;
-    private static final Logger log = LoggerFactory.getLogger(VdpWineryTransformationService.class);
+    private static final Logger log = LoggerFactory.getLogger(VdpWineryService.class);
 
-    protected VdpWineryTransformationService(
-            WineryTransformationService repository,
+    protected VdpWineryService(
+            WineryRepository repository,
             VdpWineryTransformer transformer,
             VectorizeClient vectorizeClient,
             WineryProducer wineryProducer

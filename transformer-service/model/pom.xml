@@ -44,6 +44,7 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.jsonschema2pojo</groupId>
                 <artifactId>jsonschema2pojo-maven-plugin</artifactId>
@@ -72,6 +73,25 @@
                         <goals>
                             <goal>generate</goal>
                         </goals>
+                        <configuration>
+                            <sourcePaths>
+                                <sourcePath>${project.basedir}/src/main/resources/schema/wine_dto.json</sourcePath>
+                            </sourcePaths>
+                            <targetPackage>com.github.sanandroid.importservice.model.wine</targetPackage>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-vdp-winery-dto</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <sourcePaths>
+                                <sourcePath>${project.basedir}/src/main/resources/schema/vdp_winery_dto.json</sourcePath>
+                            </sourcePaths>
+                            <targetPackage>com.github.sanandroid.importservice.model.winery</targetPackage>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -1,7 +1,7 @@
 package com.github.sanandroid.importservice.consumer;
 
 import com.github.sanandroid.importservice.model.winery.VdpWineryDto;
-import com.github.sanandroid.importservice.service.VdpWineryTransformationService;
+import com.github.sanandroid.importservice.service.VdpWineryService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 class VdpWineryConsumerTest {
 
     @Mock
-    private VdpWineryTransformationService transformationService;
+    private VdpWineryService transformationService;
 
     @Mock
     private ObjectMapper objectMapper;

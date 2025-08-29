@@ -1,6 +1,6 @@
 package com.github.sanandroid.importservice.consumer;
 
-import com.github.sanandroid.importservice.service.AbstractTransformationService;
+import com.github.sanandroid.importservice.service.AbstractService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.sanandroid.importservice.transformer.AbstractTransformer;
@@ -13,13 +13,13 @@ import java.util.UUID;
 public abstract class AbstractConsumer<I, E, REPO extends JpaRepository<E,UUID>, TRANS extends AbstractTransformer<I,E>> {
 
     protected final Class<I> type;
-    protected final AbstractTransformationService<I, E, REPO, TRANS > abstractTransformationService;
+    protected final AbstractService<I, E, REPO, TRANS > abstractService;
     protected final ObjectMapper objectMapper;
 
     @Autowired
-    public AbstractConsumer(Class<I> type, AbstractTransformationService<I, E, REPO, TRANS> abstractTransformationService, ObjectMapper objectMapper) {
+    public AbstractConsumer(Class<I> type, AbstractService<I, E, REPO, TRANS> abstractService, ObjectMapper objectMapper) {
         this.type = type;
-        this.abstractTransformationService = abstractTransformationService;
+        this.abstractService = abstractService;
         this.objectMapper = objectMapper;
     }
 
@@ -28,7 +28,7 @@ public abstract class AbstractConsumer<I, E, REPO extends JpaRepository<E,UUID>,
     protected void processMessage(String message) {
         try {
             I deserializedMessage = objectMapper.readValue(message, type);
-            abstractTransformationService.persistDto(deserializedMessage);
+            abstractService.persistDto(deserializedMessage);
         } catch (JsonProcessingException e) {
             System.err.println("Failed to deserialize message: " + message);
             e.printStackTrace();

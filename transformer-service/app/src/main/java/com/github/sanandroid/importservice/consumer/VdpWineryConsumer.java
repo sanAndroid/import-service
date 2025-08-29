@@ -1,7 +1,7 @@
 package com.github.sanandroid.importservice.consumer;
 
 import com.github.sanandroid.importservice.model.winery.VdpWineryDto;
-import com.github.sanandroid.importservice.service.VdpWineryTransformationService;
+import com.github.sanandroid.importservice.service.VdpWineryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import org.springframework.amqp.core.Message;
@@ -25,7 +25,7 @@ public class VdpWineryConsumer extends AbstractWineryConsumer<VdpWineryDto> {
     }
 
     @Autowired
-    public VdpWineryConsumer(VdpWineryTransformationService abstractTransformationService, ObjectMapper objectMapper) {
+    public VdpWineryConsumer(VdpWineryService abstractTransformationService, ObjectMapper objectMapper) {
         super(VdpWineryDto.class, abstractTransformationService, objectMapper);
     }
 

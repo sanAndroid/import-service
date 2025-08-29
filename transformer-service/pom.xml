@@ -71,6 +71,11 @@
                 <version>0.1.6</version>
             </dependency>
             <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-vector</artifactId>
+                <version>6.5.2.Final</version>
+            </dependency>
+            <dependency>
                 <groupId>io.hypersistence</groupId>
                 <artifactId>hypersistence-utils-hibernate-63</artifactId>
                 <version>3.7.2</version>
