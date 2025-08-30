@@ -38,8 +38,9 @@ class RabbitMQConsumer:
     async def connect(self) -> None:
         """Establish connection to RabbitMQ."""
         try:
-            self.connection = await aio_pika.connect_robust(self.connection_url)
+            self.connection = await aio_pika.connect_robust(self.connection_url, heartbeat=600)
             self.channel = await self.connection.channel()
+            await self.channel.set_qos(prefetch_count=1)
 
             # Declare the wineries queue for consuming
             self.queue = await self.channel.declare_queue(

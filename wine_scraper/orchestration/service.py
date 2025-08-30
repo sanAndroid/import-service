@@ -31,8 +31,9 @@ class WineScraperService:
     async def connect(self) -> None:
         """Establish connections to RabbitMQ."""
         try:
-            self.connection = await aio_pika.connect_robust(self.connection_url)
+            self.connection = await aio_pika.connect_robust(self.connection_url, heartbeat=600)
             self.channel = await self.connection.channel()
+            await self.channel.set_qos(prefetch_count=1)
             
             # Declare queues and exchange
             self.consumer_queue_obj = await self.channel.declare_queue(
@@ -68,11 +69,14 @@ class WineScraperService:
             
             scraper = WineryScraper(winery_name, winery_url)
             async with scraper:
-                wines = await scraper.scrape_winery_site()
+                wines = await asyncio.wait_for(scraper.scrape_winery_site(), timeout=180.0)
                 
             logger.info(f"Completed scrape for {winery_name}: {len(wines)} wines found")
             return wines
             
+        except asyncio.TimeoutError:
+            logger.error(f"Timeout while scraping {winery_name}")
+            return []
         except Exception as e:
             logger.error(f"Failed to scrape {winery_name}: {e}")
             return []
@@ -145,6 +149,7 @@ class WineScraperService:
         
         try:
             logger.info("Starting wine scraper service...")
+            print("Waiting for messages...")
             
             async with self.consumer_queue_obj.iterator() as queue_iter:
                 async for message in queue_iter:

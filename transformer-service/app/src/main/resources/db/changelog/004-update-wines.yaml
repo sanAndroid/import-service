@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: wines-rename-shop-to-wine-url
+      author: you
+      changes:
+        # 1) add wine_url (wider) and copy over
+        - addColumn:
+            tableName: wines
+            columns:
+              - column: { name: wine_url, type: varchar(1024) }
+        - sql:
+            sql: "UPDATE wines SET wine_url = shop_url WHERE shop_url IS NOT NULL;"
+        # (optional) keep shop_url for now; drop later when code is switched
+
+  - changeSet:
+      id: wines-drop-unique-name
+      author: you
+      changes:
+        - dropUniqueConstraint:
+            tableName: wines
+            constraintName: wines_name_key
+
+  - changeSet:
+      id: wines-add-normalized-name
+      author: you
+      changes:
+        - addColumn:
+            tableName: wines
+            columns:
+              - column: { name: normalized_name, type: varchar(256) }
+        - sql:
+            sql: |
+              UPDATE wines
+              SET normalized_name = LOWER(REGEXP_REPLACE(name, '\s+', ' ', 'g'));
+        - addNotNullConstraint:
+            tableName: wines
+            columnName: normalized_name
+            columnDataType: varchar(256)
+
+  - changeSet:
+      id: wines-vintage-not-null-default
+      author: you
+      changes:
+        - sql: { sql: "UPDATE wines SET vintage = 0 WHERE vintage IS NULL;" }
+        - addDefaultValue: { tableName: wines, columnName: vintage, defaultValueNumeric: 0 }
+        - addNotNullConstraint: { tableName: wines, columnName: vintage, columnDataType: int }
+
+  - changeSet:
+      id: wines-uniq-composite
+      author: you
+      changes:
+        - addUniqueConstraint:
+            tableName: wines
+            columnNames: winery_id, normalized_name, vintage
+            constraintName: wines_winery_normname_vintage_key
+
+  - changeSet:
+      id: wines-wine-url-unique-partial
+      author: you
+      changes:
+        - sql:
+            splitStatements: false
+            sql: |
+              CREATE UNIQUE INDEX IF NOT EXISTS wines_wine_url_uq
+              ON wines (wine_url) WHERE wine_url IS NOT NULL;

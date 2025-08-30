@@ -24,6 +24,6 @@ public class WineService extends AbstractService<WineDto, WineEntity, WineReposi
         var wineryEntity = wineryService.findOrCreatePlaceholder(input.getWineryWebsite());
         wineEntity.setWinery(wineryEntity);
         // TODO: I want an upsert here
-        repository.save(wineEntity);
+        repository.upsert(wineEntity);
     }
 }

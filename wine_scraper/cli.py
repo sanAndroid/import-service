@@ -11,6 +11,7 @@ from rich.table import Table
 
 from scrapers.winery import WineryScraper
 from pipelines.sinks import CSVSink, JSONSink
+from orchestration.service import WineScraperService
 from utils.observability import get_logger
 
 app = typer.Typer(
@@ -236,25 +237,30 @@ def list_sources() -> None:
 
 @app.command()
 def service(
-    rabbitmq_url: str = typer.Option(
-        "amqp://rabbitmq:rabbitmq@localhost:5672/",
-        "--rabbitmq-url",
-        "-r",
-        help="RabbitMQ connection URL",
-    ),
-    dry_run: bool = typer.Option(
+    once: bool = typer.Option(
         False,
-        "--dry-run",
-        help="Run in dry-run mode (no RabbitMQ)",
-    ),
+        "--once",
+        help="Process one message then exit",
+    )
 ) -> None:
     """Start the winery scraping service (RabbitMQ mode)."""
-    from orchestration.__main__ import start
     
-    start(
-        rabbitmq_url=rabbitmq_url,
-        dry_run=dry_run,
-    )
+    logger = get_logger("wine-scraper")
+
+    async def _start_service():
+        service = WineScraperService()
+        
+        if once:
+            logger.info("Running in single-message mode")
+            console.print("[blue]Processing one winery message...[/blue]")
+            await service.run_once()
+        else:
+            logger.info("Starting continuous service")
+            console.print("[green]Starting wine scraper service...[/green]")
+            console.print("[dim]Connected to RabbitMQ. Waiting for wineries...[/dim]")
+            await service.run()
+    
+    asyncio.run(_start_service())
 
 
 @app.command()
@@ -265,6 +271,27 @@ def clean_cache() -> None:
     cache = Cache("main")
     cache.clear()
     console.print("[green]Cache cleared successfully[/green]")
+
+
+@app.command()
+def inspect(
+    url: str = typer.Argument(..., help="The URL of a wine product page to inspect."),
+) -> None:
+    """
+    Inspects a single product page and generates a draft YAML configuration
+    with candidate CSS selectors for the main data points.
+    """
+    from scrapers.inspector import Inspector
+    
+    async def _inspect():
+        console.print(f"Inspecting {url}...")
+        inspector = Inspector(url)
+        config_yaml = await inspector.inspect()
+        console.print("\n--- Generated Config ---")
+        console.print(config_yaml)
+
+    asyncio.run(_inspect())
+
 
 
 def main() -> None:

@@ -119,7 +119,24 @@ class BaseScraper(ABC):
 
     def parse_html(self, html: str) -> BeautifulSoup:
         """Parse HTML content with BeautifulSoup."""
-        return BeautifulSoup(html, "lxml")
+        soup = BeautifulSoup(html, "lxml")
+        
+        # Remove common cookie banners
+        cookie_banner_selectors = [
+            "#cookie-banner",
+            "#cookie-notice",
+            "#cookie-consent",
+            ".cookie-banner",
+            ".cookie-notice",
+            ".cookie-consent",
+            "[id*='cookie']",
+            "[class*='cookie']"
+        ]
+        for selector in cookie_banner_selectors:
+            for element in soup.select(selector):
+                element.decompose()
+                
+        return soup
 
     @abstractmethod
     async def search(self, query: str) -> List[Dict[str, Any]]:
